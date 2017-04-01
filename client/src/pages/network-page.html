@@ -1,0 +1,74 @@
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700|Source+Sans+Pro' rel='stylesheet' type='text/css'>
+
+<!-- Vis.js plugin -->
+<link rel="stylesheet" href="../../bower_components/vis/dist/vis.min.css">
+<script src="../../bower_components/vis/dist/vis.min.js"></script>
+
+<!-- jQuery plugin -->
+<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+
+<link rel="import" href="../components/peer-network.html">
+
+<dom-module id="network-page">
+  <template>
+
+    <style>
+
+      :host {
+        font-family: 'Source Sans Pro', sans-serif;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'PT Sans', sans-serif;
+      }
+
+      .wrapper {
+        width: 100%;
+        max-width: 1024px;
+        margin: auto;
+      }
+
+      .content {
+        margin: 20px;
+      }
+
+    </style>
+
+    <div class="wrapper">
+      <div class="content">
+        <h1>Bämselcämp: Wer mit wem?</h1>
+        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+        <peer-network></peer-network>
+        <h3>Legende</h3>
+        <p>
+          <span style="color:#8A0B14;">...ist in einer Beziehung mit...</span><br/>
+          <span style="color:#984447;">...war in einer Beziehung mit...</span><br/>
+          <span style="color:#CA907E;">...ist in einem komplizierten Verhältnis mit...</span><br/>
+          <span style="color:#365730;">...ist schon ewig befreundet mit...</span><br/>
+          <span style="color:#1E152A;">...ist zur Grundschule gegangen mit...</span><br/>
+          <span style="color:#064E86;">...ist auf eine weiterführende Schule gegangen mit...</span><br/>
+          <span style="color:#82A7A6;">...(hat) studiert mit...</span><br/>
+          <span style="color:#0B5563;">...hat eine Ausbildung gemacht mit...</span><br/>
+          <span style="color:#CCA43B;">...spielt in einer Band mit...</span><br/>
+          <span style="color:#C73E1D;">...nimmt an Mittelalterlagern teil mit...</span>
+        </p>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'network-page',
+
+      properties: {}
+
+    });
+
+  </script>
+</dom-module>
+

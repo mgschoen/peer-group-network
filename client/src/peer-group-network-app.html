@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+<link rel="import" href="./pages/network-page.html">
+
 <dom-module id="peer-group-network-app">
   <template>
     <style>
@@ -7,7 +9,9 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+
+    <network-page></network-page>
+
   </template>
 
   <script>
@@ -18,9 +22,9 @@
       properties: {
         prop1: {
           type: String,
-          value: 'peer-group-network-app',
-        },
-      },
+          value: 'peer-group-network-app'
+        }
+      }
 
     });
   </script>
