@@ -1,6 +1,6 @@
-# \<peer-group-network-app\>
+# \<peer-group-network\>
 
-The client side of the peer-group-network application
+Client app for the peer-group-network application
 
 ## Install the Polymer-CLI
 

@@ -1,6 +1,6 @@
 {
-  "name": "peer-group-network-app",
-  "description": "The client side of the peer-group-network application",
+  "name": "peer-group-network",
+  "description": "Client app for the peer-group-network application",
   "main": "index.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0"

@@ -1,7 +1,7 @@
 {
-  "name": "peer-group-network-app",
-  "short_name": "peer-group-network-app",
-  "description": "The client side of the peer-group-network application",
+  "name": "peer-group-network",
+  "short_name": "peer-group-network",
+  "description": "Client app for the peer-group-network application",
   "start_url": "/",
   "display": "standalone"
 }
