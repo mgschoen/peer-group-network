@@ -1,56 +1,20 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Bämselcämp: Wer mit wem?</title>
-		
-		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700|Source+Sans+Pro' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="css/vis.min.css" type="text/css">
-		<link rel="stylesheet" href="css/main.css" type="text/css">
-		
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-		<script src="js/vis.min.js" type="text/javascript"></script>
-		<script src="js/data.js" type="text/javascript"></script>
-		<script src="js/main.js" type="text/javascript"></script>
-	</head>
-	<body>
-		<div class="wrapper">
-			<div class="content">
-				<h1>Bämselcämp: Wer mit wem?</h1>
-				<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				<div class="graph">
-					<div id="canvas"></div>
-					<div class="tools active">&#9776;</div>
-					<div class="panel">
-						<div class="nav"><span id="x">x</span></div>
-						<div class="infos">
-							<div class="heading">
-								<div class="profile">
-									<div class="profilePic"></div>
-									<h3 class="name"></h3>
-								</div>
-							</div>
-							<div class="body">
-								<p>Wähle eine Person aus, um Details anzuzeigen.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<h3>Legende</h3>
-				<p>
-					<span style="color:#8A0B14;">...ist in einer Beziehung mit...</span><br />
-					<span style="color:#984447;">...war in einer Beziehung mit...</span><br />
-					<span style="color:#CA907E;">...ist in einem komplizierten Verhältnis mit...</span><br />
-					<span style="color:#365730;">...ist schon ewig befreundet mit...</span><br />
-					<span style="color:#1E152A;">...ist zur Grundschule gegangen mit...</span><br />
-					<span style="color:#064E86;">...ist auf eine weiterführende Schule gegangen mit...</span><br />
-					<span style="color:#82A7A6;">...(hat) studiert mit...</span><br />
-					<span style="color:#0B5563;">...hat eine Ausbildung gemacht mit...</span><br />
-					<span style="color:#CCA43B;">...spielt in einer Band mit...</span><br />
-					<span style="color:#C73E1D;">...nimmt an Mittelalterlagern teil mit...</span>
-				</p>
-			</div>
-		</div>
-	</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>peer-group-network-app</title>
+    <meta name="description" content="peer-group-network-app description">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="/manifest.json">
+
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="/src/peer-group-network-app/peer-group-network-app.html">
+  </head>
+  <body>
+    <peer-group-network-app></peer-group-network-app>
+  </body>
 </html>

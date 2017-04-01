@@ -1,38 +1,38 @@
-# Bämselcamp Relations
+# \<peer-group-network-app\>
 
-This starts as a loose collection of notes. It will once be a shiny and glorious readme file.
+The client side of the peer-group-network application
 
-## Data Model
+## Install the Polymer-CLI
 
-### keyframe
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+
+## Viewing Your Application
 
 ```
-{
-  "identifier": Number,
-  "sentence": String,
-  "color": String
-}
+$ polymer serve
 ```
 
-##### Identifier codes
+## Building Your Application
 
-| number | meaning |
-|--------|---------|
-| 0      | ongoing relationship |
-| 1      | former relationship |
-| 2      | complicated relationship       |
-| 3      | old friends |
-| 4      | elementary school |
-| 5      | high school |
-| 6      | university |
-| 7      | job |
-| 8      | band |
-| 9      | medieval reenactment |
-| 10      | medieval reenactment |
+```
+$ polymer build
+```
 
-### relationship
+This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
+containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
+CSS, and JS optimizers.
 
-- String sentence
-- String color
+You can serve the built versions by giving `polymer serve` a folder to serve
+from:
 
-### person
+```
+$ polymer serve build/bundled
+```
+
+## Running Tests
+
+```
+$ polymer test
+```
+
+Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
