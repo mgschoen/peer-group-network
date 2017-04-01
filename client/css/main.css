@@ -1,0 +1,91 @@
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'PT Sans', sans-serif;
+}
+
+.wrapper {
+	width: 100%;
+	max-width: 1024px;
+	margin: auto;
+}
+
+.content {
+	margin: 20px;
+}
+
+.graph {
+	position: relative;
+	height: 650px;
+	background: #fafafa;
+	overflow: hidden;
+	border: 1px solid #cccccc;
+}
+
+.graph .tools {
+	position: absolute;
+	margin-left: -200px;
+	padding: 20px;
+	color: #555555;
+	font-size: 26px;
+	transition: margin 0.2s ease-out;
+}
+
+.graph .panel {
+	position: absolute;
+	width: 250px;
+	margin-left: -260px;
+	height: 100%;
+	background: #ffffff;
+	color: #aaaaaa;
+	border-right: 1px solid #cccccc;
+	transition: margin 0.2s ease-out;
+	opacity: 0.9;
+	overflow: auto;
+}
+
+.graph .panel .nav {
+	position: relative;
+	text-align: right;
+	margin: 3px 10px;
+	font-size: 20px;
+	font-family: "PT Sans", sans-serif;
+}
+
+.graph .panel .infos {
+	margin: 20px;
+}
+
+.graph .panel p {
+	font-size: 14px;
+	margin: 8px 0;
+}
+
+.graph .tools:hover, #x:hover {
+	cursor: pointer;
+}
+
+.graph .active {
+	margin-left: 0;
+}
+
+#canvas {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#canvas.shrink {
+	width: 75%;
+}
+
+.profilePic {
+	margin: auto;
+	width: 80px;
+	height: 80px;
+	border-radius: 40px;
+	background-color: #555555;
+	background-position: center center;
+}

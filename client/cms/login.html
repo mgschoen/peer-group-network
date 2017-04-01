@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>CMS - Bämselcämp Relations</title>
+
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/main.css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<img src="../assets/stage.png" class="stageBanner">
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="index.php">Bämselcämp CMS</a>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Spacer Navbar -->
+		<div class="navbar navbar-default"></div>
+
+		<div class="container">
+			<div class="page-header">
+				<h1>Login</h1>
+			</div>
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4">
+						<p class="text-danger">Falsches Passwort. Bitte versuche es erneut.</p>
+					<p>Dieser Bereich ist geschützt. Bitte gib das <abbr title="Du schön's...">Passwort</abbr> ein.</p>
+					<form role="form" action="login.php" method="post">
+						<div class="form-group">
+							<label for="pwd">Passwort:</label>
+							<input type="password" class="form-control" id="pwd" name="pwd">
+						</div>
+						<button type="submit" class="btn btn-default">Weiter</button>
+					</form>
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+		</div>
+	</body>
+</html>

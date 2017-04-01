@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>CMS - Bämselcämp Relations</title>
+
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/main.css">
+		<link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="js/jquery.redirect.js"></script>
+		<script src="js/cms.js"></script>
+	</head>
+	<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Bämselcämp CMS</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="./">Personen</a></li>
+          <li><a href="./relations.html">Beziehungstypen</a></li>
+          <li><a href="./matrix.html">Matrix</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="../index.html" target="_blank"><span class="glyphicon glyphicon-stats"></span> Grafik anzeigen</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+		<!-- Spacer Navbar -->
+		<div class="navbar navbar-default"></div>
+
+		<!-- Overview Table -->
+		<div class="container">
+			<div class="modal fade" data-backdrop="static" data-keyboard="false" id="pleaseWait">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header"><h4>Lade...</h4></div>
+						<div class="modal-body"><div class="progress"><div class="progress-bar progress-bar-striped active" style="width:100%"></div></div></div>
+					</div>
+				</div>
+			</div>
+			<div class="page-header">
+				<h1>Beziehungstypen</h1>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-hover" id="relationslist">
+						<tr>
+							<th>ID</th>
+							<th>Beschreibender Satz <small class="text-muted">(In der Grafik sichtbar)</small></th>
+							<th>Farbe</th>
+							<th>Funktionen</th>
+						</tr>
+					</table>
+					<p class="text-left">
+						<button type="button" class="btn btn-success btn-sm" id="newRelation"><span class="glyphicon glyphicon-link"></span> &nbsp;Neuer Beziehungstyp</button>
+					</p>
+				</div>
+			</div>
+		</div>
+		<script src="js/relations.js"></script>
+
+		<!-- New Relation Dialog -->
+		<div class="container">
+			<div class="page-header">
+				<h1>Beziehungstypen <small>Neuen Beziehungstyp hinzufügen</small></h1>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<form role="form">
+							<div class="form-group">
+								<label class="control-label" for="id">ID</label>
+								<input type="number" class="form-control" id="id" disabled>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="title">Beschreibender Satz <small class="text-muted">(In der Grafik sichtbar)</small></label>
+								<input type="text" class="form-control" id="title">
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="color">Linienfarbe</label>
+								<input type="text" class="form-control" id="color">
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="icon">Icon &ndash; <a href="http://www.w3schools.com/bootstrap/bootstrap_ref_comp_glyphs.asp" target="_blank">Vorschau-Liste</a></label>
+								<select class="form-control" id="icon"></select>
+							</div>
+							<button type="button" class="btn btn-success" id="save"><span class="glyphicon glyphicon-user"></span> &nbsp;Beziehungstyp anlegen</button>
+							<button type="button" class="btn btn-warning" id="cancel"><span class="glyphicon glyphicon-remove"></span> &nbsp;Abbrechen</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+		<script src="js/relations-edit.js"></script>
+
+		<!-- Edit Relation Dialog -->
+		<div class="container">
+			<div class="page-header">
+				<h1>Beziehungstypen <small id="subtitle"></small></h1>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<form role="form">
+							<div class="form-group">
+								<label class="control-label" for="id">ID</label>
+								<input type="number" class="form-control" id="id" disabled>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="title">Beschreibender Satz <small class="text-muted">(In der Grafik sichtbar)</small></label>
+								<input type="text" class="form-control" id="title">
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="color">Linienfarbe</label>
+								<input type="text" class="form-control" id="color">
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="icon">Icon &ndash; <a href="http://www.w3schools.com/bootstrap/bootstrap_ref_comp_glyphs.asp" target="_blank">Vorschau-Liste</a></label>
+								<select class="form-control" id="icon"></select>
+							</div>
+							<button type="button" class="btn btn-primary" id="save"><span class="glyphicon glyphicon-ok"></span> &nbsp;Speichern</button>
+							<button type="button" class="btn btn-warning" id="cancel"><span class="glyphicon glyphicon-remove"></span> &nbsp;Abbrechen</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+		<script src="js/relations-edit.js"></script>
+	</body>
+</html>
