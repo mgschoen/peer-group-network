@@ -1,0 +1,96 @@
+<link rel="import" href="./cms-login-page.html">
+<link rel="import" href="./cms-editor-page.html">
+
+<!-- Bootstrap plugin -->
+<link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<dom-module id="cms-page">
+  <template>
+
+    <style>
+
+    </style>
+
+    <iron-location-- path="{{cmsView}}"></iron-location>
+
+    <app-route route="{{route}}"
+               pattern="/:cmsView"
+               data="{{routeData}}"
+               tail="{{subroute}}"></app-route>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/#/cms">Bämselcämp CMS</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Spacer Navbar -->
+    <div class="navbar navbar-default"></div>
+
+    <pre>
+      loggedIn: [[loggedIn]]
+      route.path: [[route.path]]
+      iron-location sees this path: [[cmsView]]
+    </pre>
+
+    <iron-pages selected="[[routeData.cmsView]]" attr-for-selected="route-id">
+
+      <cms-login-page route-id="login" logged-in="{{loggedIn}}" view="{{routeData.cmsView}}"></cms-login-page>
+      <cms-editor-page route-id="editor" logged-in="{{loggedIn}}"></cms-editor-page>
+
+    </iron-pages>
+
+
+  </template>
+
+  <script>
+
+    // TODO: Routing does not behave properly here.
+    // Description: iron-pages does change because of this.set('routeData.cmsView', blablabl)
+    //              if url is /#/cms (without trailing / or any other route path), the value doesnt change and
+    //              neither does the browser's displayed location
+    // Idea: Instead of manipulating objects and not working data bindings we fire an iron-signal each time the
+    //       route should change including the full path that we want to call.
+    // Hint: There seems to be uninitialized stuff lying around, for example this.route (which is this.subroute in parent)
+
+    Polymer({
+
+      is: 'cms-page',
+
+      properties: {
+        loggedIn: {
+          type: Boolean,
+          value: false
+        },
+        validViews: {
+          type: Array,
+          readonly: true,
+          reflectToAttribute: false,
+          value: ['login', 'editor']
+        }
+      },
+
+      observers: [
+        '_viewChanged(routeData.cmsView)'
+      ],
+
+      _viewChanged: function (view) {
+        if (!this.loggedIn) {
+          this.set('routeData.cmsView', 'login');
+          this.set('route.path', '/login');
+        } else if (this.validViews.indexOf(view) < 0) {
+          this.set('routeData.cmsView', 'editor');
+          this.set('route.path', 'editor');
+        }
+        //console.log(this.route);
+        //console.log("I would now like to go to: "+this.route.prefix+"/editor");
+      }
+
+    });
+
+  </script>
+</dom-module>
+
