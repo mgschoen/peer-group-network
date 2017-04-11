@@ -1,7 +1,25 @@
+<!-- Library components -->
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
+<!-- Custom components -->
+<link rel="import" href="../services/api-request.html">
+
 <dom-module id="peer-network">
   <template>
 
     <style>
+
+      paper-slider {
+        width: 100%;
+      }
+
+      paper-button {
+        background: #fafafa;
+        border: 1px solid #cccccc;
+        margin-bottom: 10px;
+      }
 
       .graph {
         position: relative;
@@ -79,6 +97,22 @@
 
     </style>
 
+    <!-- Get keyframes list -->
+    <api-request endpoint="[[keyframesAjax.endpoint]]"
+                 on-success="_apiKeyframesSuccess"
+                 on-error="_apiKeyframesError"></api-request>
+
+    <!-- Begin UI -->
+    <paper-slider id="yearSlider"
+                  disabled="[[sliderDisabled]]"
+                  max="[[lastYear]]"
+                  min="[[firstYear]]"
+                  on-value-change="_yearChanged"
+                  pin="true"
+                  value="{{selectedYear}}"></paper-slider>
+
+    <paper-button id="yearButton">Jahr: [[ selectedYear ]]</paper-button>
+
     <div class="graph">
       <div id="canvas"></div>
       <div class="tools active" on-tap="_openPanel">&#9776;</div>
@@ -98,6 +132,10 @@
       </div>
     </div>
 
+    <paper-toast id="toastApiError"
+                 duration="5000"
+                 text="[[toastApiErrorText]]"></paper-toast>
+
   </template>
 
   <script>
@@ -106,12 +144,46 @@
 
       is: 'peer-network',
 
-      properties: {},
+      properties: {
+
+        // Data
+        yearIds: Object,
+
+        // Slider settings
+        firstYear: Number,
+        lastYear: {
+          type: Number,
+          value: 3000
+        },
+        selectedYear: {
+          type: Number,
+          value: 2008
+        },
+        sliderDisabled: {
+          type: Boolean,
+          value: true
+        },
+
+        // UI General
+        toastApiErrorText: {
+          type: String,
+          value: 'An error occurred while requesting data'
+        },
+        uiLoading: {
+          type: Boolean,
+          notify: true,
+          value: true
+        }
+      },
 
       ready: function () {
 
         var nodes, edges, persons, relationTypes;
         var component = this;
+
+        this.keyframesAjax = {
+          endpoint: '/keyframes'
+        };
 
         $.ajax('/api/people/', {
           method: 'GET',
@@ -281,9 +353,38 @@
         $(".tools").addClass("active");
       },
 
-      _togglePanel: function () {
-        if ($(".panel").hasClass("active")) this._closePanel();
-        else this._openPanel();
+      _yearChanged: function (event) {
+        console.info("The year hath changed");
+        var ripple = this.$.yearButton.getRipple();
+        ripple.downAction();
+        ripple.upAction();
+      },
+
+      _apiKeyframesSuccess: function (event) {
+
+        // Transform data
+        var idsForYears = new Map(), years = [];
+        event.detail.forEach(function(yearEntry){
+          var yearString = (new Date(yearEntry.time)).getFullYear();
+          idsForYears.set(yearString, yearEntry.id);
+          years.push(yearString);
+        });
+        this.yearIds = idsForYears;
+
+        // Setup slider
+        this.firstYear = Math.min.apply(null, years);
+        this.selectedYear = Math.max.apply(null, years);
+        this.lastYear = Math.max.apply(null, years);
+        this.sliderDisabled = false;
+
+        // Release UI
+        this.uiLoading = false;
+      },
+
+      _apiKeyframesError: function (event) {
+        this.toastApiErrorText = 'Error requesting data (' + event.detail + ')';
+        this.$.toastApiError.open();
+        this.uiLoading = false;
       }
 
     });

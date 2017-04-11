@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="../../bower_components/vis/dist/vis.min.css">
 <script src="../../bower_components/vis/dist/vis.min.js"></script>
 
+<!-- Library components -->
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+
+<!-- Custom components -->
 <link rel="import" href="../components/peer-network.html">
 
 <dom-module id="network-page">
@@ -29,6 +33,24 @@
         margin: 20px;
       }
 
+      .spinnerBackdrop {
+        text-align: center;
+      }
+
+      .spinnerBackdrop > paper-spinner {
+        margin: auto;
+        top: 47vh;
+      }
+
+      #loadingNetworkBackdrop {
+        background: #fafafa;
+        height: 100%;
+        opacity: 0.9;
+        position: fixed;
+        top: 0;
+        width: 100%;
+      }
+
     </style>
 
     <div class="wrapper">
@@ -37,7 +59,7 @@
         <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
           dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
           clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-        <peer-network></peer-network>
+        <peer-network ui-loading="{{networkLoading}}"></peer-network>
         <h3>Legende</h3>
         <p>
           <span style="color:#8A0B14;">...ist in einer Beziehung mit...</span><br/>
@@ -54,6 +76,13 @@
       </div>
     </div>
 
+    <template is="dom-if" if="[[networkLoading]]">
+      <div id="loadingNetworkBackdrop" class="spinnerBackdrop">
+        <paper-spinner id="loadingKeyframesSpinner"
+                       active></paper-spinner>
+      </div>
+    </template>
+
   </template>
 
   <script>
@@ -62,7 +91,12 @@
 
       is: 'network-page',
 
-      properties: {}
+      properties: {
+        networkLoading: {
+          type: Boolean,
+          value: true
+        }
+      }
 
     });
 
