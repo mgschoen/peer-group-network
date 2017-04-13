@@ -76,6 +76,15 @@
         margin-left: 0;
       }
 
+      .graph .emptyMessage {
+        margin: 20px 10px;
+        text-align: center;
+      }
+
+      .graph .emptyMessage .pictogram {
+        font-size: 3em;
+      }
+
       #canvas {
         position: absolute;
         width: 100%;
@@ -95,12 +104,41 @@
         background-position: center center;
       }
 
+      .spinnerBackdrop {
+        text-align: center;
+        height: 100%;
+        top: 0;
+        width: 100%;
+      }
+
+      .spinnerBackdrop > paper-spinner {
+        margin: auto;
+        top: 47vh;
+      }
+
     </style>
 
     <!-- Get keyframes list -->
     <api-request endpoint="[[keyframesAjax.endpoint]]"
                  on-success="_apiKeyframesSuccess"
                  on-error="_apiKeyframesError"></api-request>
+
+    <!-- Get relation types -->
+    <api-request endpoint="[[relationTypesAjax.endpoint]]"
+                 on-success="_apiRelationTypesSuccess"
+                 on-error="_apiRelationTypesError"></api-request>
+
+    <!-- Get persons -->
+    <api-request endpoint="[[personsAjax.endpoint]]"
+                 on-success="_apiPersonsSuccess"
+                 on-error="_apiPersonsError"></api-request>
+
+    <!-- Get relations -->
+    <api-request endpoint="[[relationsAjax.endpoint]]"
+                 eq-filter-key="keyframeId"
+                 eq-filter-value="[[relationsAjax.yearId]]"
+                 on-success="_apiRelationsSuccess"
+                 on-error="_apiRelationsError"></api-request>
 
     <!-- Begin UI -->
     <paper-slider id="yearSlider"
@@ -115,21 +153,36 @@
 
     <div class="graph">
       <div id="canvas"></div>
-      <div class="tools active" on-tap="_openPanel">&#9776;</div>
-      <div class="panel">
-        <div class="nav"><span id="x" on-tap="_closePanel">x</span></div>
-        <div class="infos">
-          <div class="heading">
-            <div class="profile">
-              <div class="profilePic"></div>
-              <h3 class="name"></h3>
+      <template is="dom-if" if="[[loadingGraph]]">
+        <div class="spinnerBackdrop">
+          <paper-spinner active="[[loadingGraph]]"></paper-spinner>
+        </div>
+      </template>
+      <template is="dom-if" if="[[!loadingGraph]]">
+        <template is="dom-if" if="[[emptyGraph]]">
+          <div class="emptyMessage">
+            <p class="pictogram">&#9889;</p>
+            <p>Keine Daten für das Jahr [[selectedYear]] vorhanden.</p>
+          </div>
+        </template>
+        <template is="dom-if" if="[[!emptyGraph]]">
+          <div class="tools active" on-tap="_openPanel">&#9776;</div>
+          <div class="panel">
+            <div class="nav"><span id="x" on-tap="_closePanel">x</span></div>
+            <div class="infos">
+              <div class="heading">
+                <div class="profile">
+                  <div class="profilePic"></div>
+                  <h3 class="name"></h3>
+                </div>
+              </div>
+              <div class="body">
+                <p>Wähle eine Person aus, um Details anzuzeigen.</p>
+              </div>
             </div>
           </div>
-          <div class="body">
-            <p>Wähle eine Person aus, um Details anzuzeigen.</p>
-          </div>
-        </div>
-      </div>
+        </template>
+      </template>
     </div>
 
     <paper-toast id="toastApiError"
@@ -146,8 +199,50 @@
 
       properties: {
 
+        // Constants
+        GRAPH_OPTIONS: {
+          type: Object,
+          value: {
+            nodes: {
+              borderWidth: 1,
+              borderWidthSelected: 2,
+              color: {
+                border: "rgba(140,140,140,1)",
+                background: "rgba(255,255,255,1)",
+                highlight: {
+                  border: "rgba(0,204,0,1)",
+                  background: "rgba(220,255,220,1)"
+                },
+                hover: {
+                  border: "rgba(0,204,0,1)",
+                  background: "rgba(230,255,230,1)"
+                }
+              },
+              shape: "circle"
+            },
+            edges: {
+              hoverWidth: 0,
+              width: 0
+            },
+            interaction: {
+              hover: true
+            },
+            physics: {
+              maxVelocity: 10,
+              solver: "repulsion"
+            }
+          }
+        },
+
         // Data
         yearIds: Object,
+        relationTypes: Object,
+        persons: Object,
+        currentNodes: Object,
+        currentEdges: Object,
+
+        // Graph instance
+        graph: Object,
 
         // Slider settings
         firstYear: Number,
@@ -165,27 +260,39 @@
         },
 
         // UI General
-        toastApiErrorText: {
-          type: String,
-          value: 'An error occurred while requesting data'
+        emptyGraph: {
+          type: Boolean,
+          value: false
         },
-        uiLoading: {
+        loadingUi: {
           type: Boolean,
           notify: true,
           value: true
+        },
+        loadingGraph: {
+          type: Boolean,
+          value: false
+        },
+        toastApiErrorText: {
+          type: String,
+          value: 'An error occurred while requesting data'
         }
       },
 
+      /* --------------------------------- */
+      /*  Setup methods                    */
+      /* --------------------------------- */
       ready: function () {
 
         var nodes, edges, persons, relationTypes;
         var component = this;
 
+        // Start loading all keyframes
         this.keyframesAjax = {
           endpoint: '/keyframes'
         };
 
-        $.ajax('/api/people/', {
+        /*$.ajax('/api/people/', {
           method: 'GET',
           success: function (peopleResponse) {
 
@@ -339,25 +446,8 @@
               FERels.append(relParagraph);
             });
           }
-        }
+        }*/
 
-      },
-
-      _openPanel: function () {
-        $(".panel").addClass("active");
-        $(".tools").removeClass("active");
-      },
-
-      _closePanel: function () {
-        $(".panel").removeClass("active");
-        $(".tools").addClass("active");
-      },
-
-      _yearChanged: function (event) {
-        console.info("The year hath changed");
-        var ripple = this.$.yearButton.getRipple();
-        ripple.downAction();
-        ripple.upAction();
       },
 
       _apiKeyframesSuccess: function (event) {
@@ -378,13 +468,250 @@
         this.sliderDisabled = false;
 
         // Release UI
-        this.uiLoading = false;
+        this.loadingUi = false;
+
+        // Init graph
+        this.reloadGraph();
       },
 
       _apiKeyframesError: function (event) {
-        this.toastApiErrorText = 'Error requesting data (' + event.detail + ')';
+        this.toastApiErrorText = 'Error requesting keyframes (' + event.detail + ')';
         this.$.toastApiError.open();
-        this.uiLoading = false;
+        this.loadingUi = false;
+      },
+
+      /* --------------------------------- */
+      /*  Graph loading methods            */
+      /* --------------------------------- */
+      reloadGraph: function () {
+
+        this.loadingGraph = true;
+
+        if (this.graph) {
+          this.graph.destroy();
+          this.currentEdges = null;
+          this.currentNodes = null;
+        }
+
+        if (!this.relationTypes) {
+          this.relationTypesAjax = {
+            endpoint: '/relationtypes'
+          }
+        } else if (!this.persons) {
+          this.personsAjax = {
+            endpoint: '/people'
+          }
+        } else {
+          this._reloadRelationsForSelectedYear();
+        }
+      },
+
+      _apiRelationTypesSuccess: function (event) {
+        this.relationTypes = new vis.DataSet(event.detail);
+        if (!this.persons) {
+          this.personsAjax = {
+            endpoint: '/people'
+          }
+        } else {
+          this._reloadRelationsForSelectedYear();
+        }
+      },
+
+      _apiRelationTypesError: function (event) {
+        this.toastApiErrorText = 'Error requesting relationTypes (' + event.detail + ')';
+        this.$.toastApiError.open();
+        this.loadingGraph = false;
+      },
+
+      _apiPersonsSuccess: function (event) {
+        this.persons = new vis.DataSet(event.detail);
+        this._reloadRelationsForSelectedYear();
+      },
+
+      _apiPersonsError: function (event) {
+        this.toastApiErrorText = 'Error requesting persons (' + event.detail + ')';
+        this.$.toastApiError.open();
+        this.loadingGraph = false;
+      },
+
+      _reloadRelationsForSelectedYear: function () {
+        this.relationsAjax = {
+          endpoint: '/relations',
+          yearId: this.yearIds.get(this.selectedYear)
+        };
+      },
+
+      _apiRelationsSuccess: function (event) {
+        this._repaintNetworkWithRelations(event.detail);
+      },
+
+      _apiRelationsError: function (event) {
+        this.toastApiErrorText = 'Error requesting relations (' + event.detail + ')';
+        this.$.toastApiError.open();
+        this.loadingGraph = false;
+      },
+
+      _repaintNetworkWithRelations: function (relations) {
+
+        const COMPONENT = this;
+
+        if (relations.length === 0) {
+          this._paintEmptyGraph();
+          return;
+        }
+
+        // Gather appearing persons and relations
+        var appearingPersons = new vis.DataSet(),
+            edges = new vis.DataSet();
+        relations.forEach(function(relation){
+          var firstPerson = COMPONENT.persons.get(relation.personId[0]);
+          var secondPerson = COMPONENT.persons.get(relation.personId[1]);
+          if (firstPerson && secondPerson) {
+            appearingPersons.update(firstPerson);
+            appearingPersons.update(secondPerson);
+            var relationType = COMPONENT.relationTypes.get(relation.relationTypeId);
+            if (relationType) {
+              edges.add({
+                id: relation.id,
+                from: relation.personId[0],
+                to: relation.personId[1],
+                color: relationType.color,
+                sentence: relationType.sentence
+              });
+            }
+          }
+        });
+        if (appearingPersons.length === 0) {
+          this._paintEmptyGraph();
+          return;
+        }
+
+        // Convert appearing persons into nodes
+        var nodes = new vis.DataSet(appearingPersons.map(function(person){
+          return {
+            id: person.id,
+            label: person.name
+          }
+        }));
+
+        // We now know that we definitely want to paint the graph
+        // (_paintEmptyGraph is not called hereafter), and we have
+        // assembled the graph data. Therefore we store it in properties
+        this.currentNodes = appearingPersons;
+        this.currentEdges = edges;
+
+        var data = {
+          nodes: nodes,
+          edges: edges
+        };
+
+        var container = this.$.canvas;
+        this.graph = new vis.Network(container, data, this.GRAPH_OPTIONS);
+
+        // set action listeners
+        this.graph.on("selectNode", function () {
+          COMPONENT._openPanel();
+          COMPONENT._updatePanel(COMPONENT.graph.getSelection().nodes[0]);
+        });
+        this.graph.on("deselectNode", function () {
+          COMPONENT._closePanel();
+          COMPONENT._updatePanel(-1);
+        });
+
+        this.emptyGraph = false;
+        this.loadingGraph = false;
+      },
+
+      _paintEmptyGraph: function () {
+        this.emptyGraph = true;
+        this.loadingGraph = false;
+      },
+
+      /* --------------------------------- */
+      /*  UI functionality                 */
+      /* --------------------------------- */
+      _openPanel: function () {
+        $(".panel").addClass("active");
+        $(".tools").removeClass("active");
+      },
+
+      _closePanel: function () {
+        $(".panel").removeClass("active");
+        $(".tools").addClass("active");
+      },
+
+      _updatePanel: function (personId) {
+
+        const COMPONENT = this;
+        const DOM_NAME = $(".profile .name");
+        const DOM_AVATAR = $(".profilePic");
+        const DOM_RELATIONS = $(".panel .body");
+
+        var selectedPerson = this.persons.get(personId);
+
+        if (personId < 0 || !selectedPerson) {
+
+          // If an invalid personId was specified, close the info panel
+          DOM_NAME.empty();
+          DOM_AVATAR.css("background-image", "");
+          DOM_RELATIONS.html("<p>Wähle eine Person aus, um Details anzuzeigen.</p>");
+
+        } else {
+
+          // Otherwise find all relations this person is involved in
+          // and group them by their relationType
+          var selectedPersonRelations = new Map();
+          this.currentEdges.forEach(function (edge) {
+            var peer;
+            if (edge.from == personId) peer = edge.to;
+            if (edge.to == personId) peer = edge.from;
+            if (peer) {
+              var existingRelationEntry = selectedPersonRelations.get(edge.relationType);
+              var additionalPeer = COMPONENT.persons.get(peer).name;
+              var peerList = (existingRelationEntry)
+                ? existingRelationEntry.peerNames.concat(additionalPeer)
+                : [additionalPeer];
+              selectedPersonRelations.set(edge.relationType, {
+                sentence: edge.sentence,
+                color: edge.color,
+                peerNames: peerList
+              });
+            }
+          });
+
+          // Update DOM
+          DOM_NAME.text(selectedPerson.name);
+          DOM_AVATAR.css("background-image", "url(" + selectedPerson.imgurl + ")");
+          DOM_RELATIONS.empty();
+          selectedPersonRelations.forEach(function (relation) {
+            var relString = relation.sentence;
+            relation.peerNames.forEach(function (peerName, idx) {
+              switch (idx) {
+                case 0:
+                  relString += "<strong>" + peerName + "</strong>";
+                  break;
+                case relation.peerNames.length - 1:
+                  relString += " und <strong>" + peerName + "</strong>";
+                  break;
+                default:
+                  relString += ", <strong>" + peerName + "</strong>";
+              }
+            });
+            var relParagraph = $('<p class="relation"></p>').html(relString);
+            relParagraph.css("color", relation.color);
+            DOM_RELATIONS.append(relParagraph);
+          });
+        }
+      },
+
+      /* --------------------------------- */
+      /*  Observers                        */
+      /* --------------------------------- */
+      _yearChanged: function (event) {
+        this.reloadGraph();
+        var ripple = this.$.yearButton.getRipple();
+        ripple.downAction();
+        ripple.upAction();
       }
 
     });

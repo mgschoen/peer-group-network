@@ -7,7 +7,8 @@
 
     </style>
 
-    <iron-ajax auto
+    <iron-ajax id="ironAjax"
+               auto
                content-type="application/json"
                headers="[[headers]]"
                loading="{{loading}}"
@@ -27,9 +28,18 @@
 
         // input
         accessToken: String,
-        endpoint: String,
-        eqFilterKey: String,
-        eqFilterValue: String,
+        endpoint: {
+          type: String,
+          value: ''
+        },
+        eqFilterKey: {
+          type: String,
+          value: ''
+        },
+        eqFilterValue: {
+          type: String,
+          value: ''
+        },
 
         // internal
         baseUrl: {
@@ -42,7 +52,7 @@
         },
         queryUrl: {
           type: String,
-          computed: '_computeQueryUrl(endpoint)'
+          computed: '_computeQueryUrl(baseUrl, endpoint, eqFilterKey, eqFilterValue)'
         },
 
         // output
@@ -55,10 +65,12 @@
         };
       },
 
-      _computeQueryUrl: function(endpoint) {
-        return this.baseUrl + endpoint +
-            ((this.eqFilterKey && this.eqFilterValue)
-            ? '?filter[where][' + this.eqFilterKey + ']=' + this.eqFilterValue : '');
+      _computeQueryUrl: function(baseUrl, endpoint, eqFilterKey, eqFilterValue) {
+        if (baseUrl != '' && endpoint != '') {
+          return baseUrl + endpoint +
+            ((eqFilterKey != '' && eqFilterValue != '')
+              ? '?filter[where][' + eqFilterKey + ']=' + eqFilterValue : '');
+        }
       },
 
       _ajaxSuccess: function (event) {
@@ -67,6 +79,10 @@
 
       _ajaxError: function (event) {
         this.fire('error', event.detail.error.message);
+      },
+
+      fireRequest: function () {
+        this.$.ironAjax.generateRequest();
       }
 
     });
