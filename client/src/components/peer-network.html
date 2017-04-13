@@ -185,6 +185,18 @@
       </template>
     </div>
 
+    <h3>Legende</h3>
+    <template is="dom-if" if="[[loadingRelationTypes]]">
+      <paper-spinner active="[[loadingRelationTypes]]"></paper-spinner>
+    </template>
+    <template is="dom-if" if="[[!loadingRelationTypes]]">
+      <p>
+        <template is="dom-repeat" items="[[relationTypesArray]]">
+          <span style="color: [[item.color]];">[[item.sentence]]</span><br/>
+        </template>
+      </p>
+    </template>
+
     <paper-toast id="toastApiError"
                  duration="5000"
                  text="[[toastApiErrorText]]"></paper-toast>
@@ -264,14 +276,18 @@
           type: Boolean,
           value: false
         },
+        loadingGraph: {
+          type: Boolean,
+          value: false
+        },
+        loadingRelationTypes: {
+          type: Boolean,
+          value: false
+        },
         loadingUi: {
           type: Boolean,
           notify: true,
           value: true
-        },
-        loadingGraph: {
-          type: Boolean,
-          value: false
         },
         toastApiErrorText: {
           type: String,
@@ -337,6 +353,7 @@
         }
 
         if (!this.relationTypes) {
+          this.loadingRelationTypes = true;
           this.relationTypesAjax = {
             endpoint: '/relationtypes'
           }
@@ -351,6 +368,8 @@
 
       _apiRelationTypesSuccess: function (event) {
         this.relationTypes = new vis.DataSet(event.detail);
+        this.relationTypesArray = event.detail;
+        this.loadingRelationTypes = false;
         if (!this.persons) {
           this.personsAjax = {
             endpoint: '/people'
@@ -363,6 +382,7 @@
       _apiRelationTypesError: function (event) {
         this.toastApiErrorText = 'Error requesting relationTypes (' + event.detail + ')';
         this.$.toastApiError.open();
+        this.loadingRelationTypes = false;
         this.loadingGraph = false;
       },
 
