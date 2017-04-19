@@ -8,7 +8,6 @@
     "jquery": "^3.2.1",
     "app-route": "PolymerElements/app-route#^0.9.3",
     "iron-pages": "PolymerElements/iron-pages#^1.0.8",
-    "bootstrap": "^3.3.7",
     "paper-slider": "PolymerElements/paper-slider#^1.0.15",
     "paper-button": "PolymerElements/paper-button#^1.0.14",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",

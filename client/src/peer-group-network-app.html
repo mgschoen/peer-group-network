@@ -5,7 +5,6 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <link rel="import" href="./pages/network-page.html">
-<link rel="import" href="./pages/cms-page.html">
 
 <!-- jQuery plugin -->
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
@@ -18,62 +17,9 @@
       }
     </style>
 
-    <app-location route="{{route}}" use-hash-as-path></app-location>
-
-    <app-route route="{{route}}"
-               pattern="/:appView"
-               data="{{routeData}}"
-               tail="{{subroute}}"></app-route>
-
-    <iron-pages selected="[[routeData.appView]]" attr-for-selected="route-id">
-
-      <network-page route-id="network"></network-page>
-      <cms-page route-id="cms" route="{{subroute}}"></cms-page>
-
-    </iron-pages>
+    <network-page route-id="network"></network-page>
 
   </template>
 
-  <script>
-    Polymer({
-
-      is: 'peer-group-network-app',
-
-      properties: {
-        route: {
-          type: Object,
-          notify: true
-        },
-        validViews: {
-          type: Array,
-          readOnly: true,
-          reflectToAttribute: false,
-          value: ['cms', 'network']
-        }
-      },
-
-      observers: [
-        '_routeChanged(route.*)',
-        '_viewChanged(routeData.appView)',
-        '_subrouteChanged(subroute.*)'
-      ],
-
-      _routeChanged: function (changeRecord) {
-        if (changeRecord.path === 'route' && this.route.path === '') {
-          location.href = './#/network';
-        }
-      },
-
-      _viewChanged: function (view) {
-        if (this.validViews.indexOf(view) < 0) {
-          this.set('route.path', '/network');
-        }
-      },
-
-      _subrouteChanged: function (changedRecord) {
-        console.log("main view recognized that sub view has changed");
-      }
-
-    });
-  </script>
+  <script>Polymer({is: 'peer-group-network-app'});</script>
 </dom-module>

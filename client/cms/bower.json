@@ -1,0 +1,22 @@
+{
+  "name": "Baemselcamp CMS",
+  "homepage": "https://github.com/mgschoen/peer-group-network",
+  "authors": [
+    "Martin Schoen <schoenm@cip.ifi.lmu.de>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.6.4",
+    "bootstrap": "^3.3.7"
+  }
+}
