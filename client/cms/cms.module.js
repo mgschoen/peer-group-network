@@ -1,1 +1,1 @@
-angular.module('baemselcampCms', ['ngRoute']);
+angular.module('baemselcampCms', ['ngRoute', 'ngCookies']);

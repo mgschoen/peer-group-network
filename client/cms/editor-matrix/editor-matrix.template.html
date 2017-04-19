@@ -1,36 +1,38 @@
-<div class="modal fade" data-backdrop="static" data-keyboard="false" id="pleaseWait">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header"><h4>Lade...</h4></div>
-      <div class="modal-body"><div class="progress"><div class="progress-bar progress-bar-striped active" style="width:100%"></div></div></div>
+<div class="container" ng-controller="MatrixController">
+  <div class="modal fade" data-backdrop="static" data-keyboard="false" id="pleaseWait">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header"><h4>Lade...</h4></div>
+        <div class="modal-body"><div class="progress"><div class="progress-bar progress-bar-striped active" style="width:100%"></div></div></div>
+      </div>
     </div>
   </div>
-</div>
-<div class="page-header">
-  <h1>Beziehungsmatrix</h1>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <div class="panel-group" id="topLevelPersonsContainer"></div>
+  <div class="page-header">
+    <h1>Beziehungsmatrix</h1>
   </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title"><a href="#info" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign"></span></a></h4>
-      </div>
-      <div class="panel-collapse collapse in" id="info">
-        <div class="panel-body" id="explanation">
-          <p>Klicke auf eine Person, um ihre Beziehungen zu anderen Personen einzusehen und zu bearbeiten. Beziehungen sind immer wechselseitig: Änderst du eine Beziehung von Person A zu Person B, wirkt sich das auch auf die selbe Beziehung von B zu A aus.</p>
-          <h3>Legende</h3>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel-group" id="topLevelPersonsContainer"></div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title"><a href="#info" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign"></span></a></h4>
+        </div>
+        <div class="panel-collapse collapse in" id="info">
+          <div class="panel-body" id="explanation">
+            <p>Klicke auf eine Person, um ihre Beziehungen zu anderen Personen einzusehen und zu bearbeiten. Beziehungen sind immer wechselseitig: Änderst du eine Beziehung von Person A zu Person B, wirkt sich das auch auf die selbe Beziehung von B zu A aus.</p>
+            <h3>Legende</h3>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <p>
-      <button type="button" class="btn btn-success" id="saveMatrix"><span class="glyphicon glyphicon-ok"></span> &nbsp;Matrix speichern</span></button>
-    </p>
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+        <button type="button" class="btn btn-success" id="saveMatrix"><span class="glyphicon glyphicon-ok"></span> &nbsp;Matrix speichern</span></button>
+      </p>
+    </div>
   </div>
 </div>

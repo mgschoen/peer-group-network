@@ -1,5 +1,8 @@
 angular.module('baemselcampCms')
 
+  /**
+   * App configuration
+   */
   .config(['$locationProvider', '$routeProvider',
     function config ($locationProvider, $routeProvider) {
 
@@ -16,35 +19,88 @@ angular.module('baemselcampCms')
           templateUrl: './editor-matrix/editor-matrix.template.html'
         })
         .when('/editor/persons', {
-          templateUrl: './editor-persons-list/editor-persons-list.template.html'
+          templateUrl: './editor-persons/editor-persons-list/editor-persons-list.template.html'
         })
         .when('/editor/persons/list', {
-          templateUrl: './editor-persons-list/editor-persons-list.template.html'
+          templateUrl: './editor-persons/editor-persons-list/editor-persons-list.template.html'
         })
         .when('/editor/persons/new', {
-          templateUrl: './editor-persons-new/editor-persons-new.template.html'
+          templateUrl: './editor-persons/editor-persons-new/editor-persons-new.template.html'
         })
         .when('/editor/persons/edit', {
-          templateUrl: './editor-persons-edit/editor-persons-edit.template.html'
+          templateUrl: './editor-persons/editor-persons-edit/editor-persons-edit.template.html'
         })
         .when('/editor/relations', {
-          templateUrl: './editor-relations-list/editor-relations-list.template.html'
+          templateUrl: './editor-relations/editor-relations-list/editor-relations-list.template.html'
         })
         .when('/editor/relations/list', {
-          templateUrl: './editor-relations-list/editor-relations-list.template.html'
+          templateUrl: './editor-relations/editor-relations-list/editor-relations-list.template.html'
         })
         .when('/editor/relations/new', {
-          templateUrl: './editor-relations-new/editor-relations-new.template.html'
+          templateUrl: './editor-relations/editor-relations-new/editor-relations-new.template.html'
         })
         .when('/editor/relations/edit', {
-          templateUrl: './editor-relations-edit/editor-relations-edit.template.html'
+          templateUrl: './editor-relations/editor-relations-edit/editor-relations-edit.template.html'
         })
         .otherwise('/editor');
 
     }])
 
-  .controller('MainController', function($scope){
-    $scope.redirect = function (url) {
-      location.hash = url;
-    }
+  /**
+   * App initialization
+   */
+  .run(['$cookies', '$rootScope', '$location', '$http',
+    function($cookies, $rootScope, $location, $http){
+
+      var credentials = $cookies.getObject('bc-credentials');
+      if (credentials && credentials.userId && credentials.accessToken) {
+        $http.get('/api/users/'+credentials.userId).then(
+          // Success case
+          function (response) {
+            $rootScope.credentials = credentials;
+            $http.defaults.headers.common['Authorization'] = credentials.accessToken;
+          }
+          // otherwise do nothing
+        );
+      }
+
+      $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        if (!$rootScope.credentials && $location.path() != '/login') {
+          $location.path('/login');
+        }
+      });
+
+    }])
+
+  /**
+   * Main Controller of the app
+   */
+  .controller('MainController', function($scope, $location, $http, $cookies, $rootScope){
+
+    /**
+     * Redirect to a relative path inside the app
+     * @param path
+       */
+    $scope.redirect = function (path) {
+      $location.path(path);
+    };
+
+    /**
+     * Send a logout request to the API
+     */
+    $scope.fireLogoutRequest = function () {
+
+      $http.post('/api/users/logout').then(
+        function (response) {
+          $cookies.remove('bc-credentials');
+          $rootScope.credentials = null;
+          $scope.redirect('/login');
+        },
+        function (error) {
+          console.log(error);
+        }
+      );
+
+    };
+
   });

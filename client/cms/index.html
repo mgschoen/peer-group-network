@@ -11,10 +11,15 @@
     <!-- Angular plugin -->
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/angular-route/angular-route.js"></script>
+    <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
 
     <!-- App scripts -->
     <script src="./cms.module.js"></script>
     <script src="./cms.config.js"></script>
+    <script src="./login/login.controller.js"></script>
+    <script src="./editor-matrix/editor-matrix.controller.js"></script>
+    <script src="./editor-persons/editor-persons.controller.js"></script>
+    <script src="./editor-relations/editor-relations.controller.js"></script>
   </head>
   <body ng-controller="MainController">
 
@@ -24,14 +29,14 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="#/">Bämselcämp CMS</a>
         </div>
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav" ng-if="credentials">
           <li><a href="#/editor/matrix">Matrix</a></li>
           <li><a href="#/editor/persons">Personen</a></li>
           <li><a href="#/editor/relations">Beziehungstypen</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" ng-if="credentials">
           <li><a href="/" target="_blank"><span class="glyphicon glyphicon-stats"></span> Grafik anzeigen</a></li>
-          <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          <li><a href="" ng-click="fireLogoutRequest()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
       </div>
     </nav>
@@ -40,9 +45,7 @@
     <div class="navbar navbar-default"></div>
 
     <!-- Angular view -->
-    <div class="container">
-      <div ng-view></div>
-    </div>
+    <div ng-view></div>
 
   </body>
 </html>
