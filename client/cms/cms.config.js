@@ -1,4 +1,5 @@
 angular.module('baemselcampCms')
+
   .config(['$locationProvider', '$routeProvider',
     function config ($locationProvider, $routeProvider) {
 
@@ -32,7 +33,6 @@ angular.module('baemselcampCms')
         .when('/editor/relations/list', {
           templateUrl: './editor-relations-list/editor-relations-list.template.html'
         })
-
         .when('/editor/relations/new', {
           templateUrl: './editor-relations-new/editor-relations-new.template.html'
         })
@@ -41,5 +41,10 @@ angular.module('baemselcampCms')
         })
         .otherwise('/editor');
 
-    }]
-  );
+    }])
+
+  .controller('MainController', function($scope){
+    $scope.redirect = function (url) {
+      location.hash = url;
+    }
+  });

@@ -16,8 +16,33 @@
     <script src="./cms.module.js"></script>
     <script src="./cms.config.js"></script>
   </head>
-  <body>
-    <h1>I am a great {{'Angular'+' '+'App'}}</h1>
-    <div ng-view></div>
+  <body ng-controller="MainController">
+
+    <!-- Global navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#/">Bämselcämp CMS</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="#/editor/matrix">Matrix</a></li>
+          <li><a href="#/editor/persons">Personen</a></li>
+          <li><a href="#/editor/relations">Beziehungstypen</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/" target="_blank"><span class="glyphicon glyphicon-stats"></span> Grafik anzeigen</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Spacer for navbar -->
+    <div class="navbar navbar-default"></div>
+
+    <!-- Angular view -->
+    <div class="container">
+      <div ng-view></div>
+    </div>
+
   </body>
 </html>
