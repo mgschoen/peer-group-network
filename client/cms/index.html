@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html lang="de" ng-app>
+<html lang="de" ng-app="baemselcampCms">
   <head>
+
     <meta charset="UTF-8">
     <title>Bämselcamp CMS</title>
+
+    <!-- Bootstrap plugin -->
     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <script src="./bower_components/angular/angular.min.js"></script>
+
+    <!-- Angular plugin -->
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-route/angular-route.js"></script>
+
+    <!-- App scripts -->
+    <script src="./cms.module.js"></script>
+    <script src="./cms.config.js"></script>
   </head>
   <body>
     <h1>I am a great {{'Angular'+' '+'App'}}</h1>
+    <div ng-view></div>
   </body>
 </html>
