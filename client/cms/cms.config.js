@@ -63,7 +63,6 @@ angular.module('baemselcampCms')
           },
           // Error case (credentials invalid)
           function (error) {
-            console.log(error);
             $cookies.remove('bc-credentials');
             $rootScope.credentials = null;
             $http.defaults.headers.common['Authorization'] = '';
@@ -73,7 +72,6 @@ angular.module('baemselcampCms')
       }
 
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        console.log('Location change start');
         if (!$rootScope.credentials && $location.path() != '/login') {
           $location.path('/login');
         } else if ($rootScope.credentials && $location.path() == '/login') {

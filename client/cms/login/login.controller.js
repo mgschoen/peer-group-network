@@ -13,7 +13,6 @@ angular.module('baemselcampCms')
       $http.post('/api/users/login', requestBody)
         .then(
           function (response) {
-            console.log(response);
             $scope.hasError = false;
             var credentials = {
               userId: response.data.userId,
@@ -25,7 +24,6 @@ angular.module('baemselcampCms')
             location.hash = '/editor';
           },
           function (error) {
-            console.log(error);
             $scope.hasError = true;
           });
 
