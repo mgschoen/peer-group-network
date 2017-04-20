@@ -53,20 +53,31 @@ angular.module('baemselcampCms')
     function($cookies, $rootScope, $location, $http){
 
       var credentials = $cookies.getObject('bc-credentials');
+      $rootScope.credentials = credentials;
       if (credentials && credentials.userId && credentials.accessToken) {
+        $http.defaults.headers.common['Authorization'] = credentials.accessToken;
         $http.get('/api/users/'+credentials.userId).then(
           // Success case
           function (response) {
-            $rootScope.credentials = credentials;
-            $http.defaults.headers.common['Authorization'] = credentials.accessToken;
+            // all is fine
+          },
+          // Error case (credentials invalid)
+          function (error) {
+            console.log(error);
+            $cookies.remove('bc-credentials');
+            $rootScope.credentials = null;
+            $http.defaults.headers.common['Authorization'] = '';
+            $location.path('/login');
           }
-          // otherwise do nothing
         );
       }
 
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        console.log('Location change start');
         if (!$rootScope.credentials && $location.path() != '/login') {
           $location.path('/login');
+        } else if ($rootScope.credentials && $location.path() == '/login') {
+          $location.path('/editor');
         }
       });
 
@@ -94,6 +105,7 @@ angular.module('baemselcampCms')
         function (response) {
           $cookies.remove('bc-credentials');
           $rootScope.credentials = null;
+          $http.defaults.headers.common['Authorization'] = '';
           $scope.redirect('/login');
         },
         function (error) {
