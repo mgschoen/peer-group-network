@@ -1,3 +1,9 @@
+<style>
+  .avatar-img {
+    max-height: 50px;
+  }
+</style>
+
 <div class="container" ng-controller="PersonsController">
   <div class="modal fade" data-backdrop="static" data-keyboard="false" id="pleaseWait">
     <div class="modal-dialog">
@@ -14,10 +20,18 @@
     <div class="col-md-12">
       <table class="table table-hover" id="personlist">
         <tr>
-          <th>ID</th>
           <th>Name</th>
           <th>Logo</th>
           <th>Funktionen</th>
+        </tr>
+        <tr ng-repeat="person in persons">
+          <td>{{person.name}}</td>
+          <td><img src="{{person.imgurl}}" class="avatar-img"></td>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
+            &nbsp;
+            <button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+          </td>
         </tr>
       </table>
       <p class="text-left">

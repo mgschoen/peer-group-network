@@ -4,7 +4,7 @@ angular.module('baemselcampCms')
    * App configuration
    */
   .config(['$locationProvider', '$routeProvider',
-    function config ($locationProvider, $routeProvider) {
+    function ($locationProvider, $routeProvider) {
 
       $locationProvider.hashPrefix('');
 
