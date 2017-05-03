@@ -1,6 +1,12 @@
 <style>
-  .avatar-img {
-    max-height: 50px;
+  .avatar-wrapper {
+    background-position: center;
+    background-size: cover;
+    border-radius: 25px;
+    height: 50px;
+    overflow: hidden;
+    text-align: center;
+    width: 50px;
   }
 </style>
 
@@ -9,10 +15,10 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header"><h4>Lade...</h4></div>
-        <div class="modal-body"><div class="progress"><div class="progress-bar progress-bar-striped active" style="width:100%"></div></div></div>
-      </div>
-    </div>
-  </div>
+        <div class="modal-body">
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped active" style="width:100%"></div>
+          </div></div></div></div></div>
   <div class="page-header">
     <h1>Personen</h1>
   </div>
@@ -26,7 +32,9 @@
         </tr>
         <tr ng-repeat="person in persons">
           <td>{{person.name}}</td>
-          <td><img src="{{person.imgurl}}" class="avatar-img"></td>
+          <td>
+            <div class="avatar-wrapper" style="{{'background-image:url(\''+person.imgurl+'\')'}}"></div>
+          </td>
           <td>
             <button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
             &nbsp;
