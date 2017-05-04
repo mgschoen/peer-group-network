@@ -9,11 +9,13 @@
       <p>Dieser Bereich ist geschützt. Bitte melde dich an.</p>
       <div class="form-group">
         <label for="username">Name:</label>
-        <input type="text" class="form-control" id="username" ng-model="username" name="pwd">
+        <input type="text" class="form-control" id="username"
+               ng-model="username" name="pwd" on-keypress-enter="fireLoginRequest()">
       </div>
       <div class="form-group">
         <label for="pwd">Passwort:</label>
-        <input type="password" class="form-control" id="pwd" ng-model="password" name="pwd">
+        <input type="password" class="form-control" id="pwd"
+               ng-model="password" name="pwd" on-keypress-enter="fireLoginRequest()">
       </div>
       <button class="btn btn-default" ng-click="fireLoginRequest()">Einloggen</button>
     </div>

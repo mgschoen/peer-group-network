@@ -81,6 +81,19 @@ angular.module('baemselcampCms')
 
     }])
 
+  .directive('onKeypressEnter', function () {
+    return function (scope, element, attrs) {
+      element.bind('keydown keypress', function (event) {
+        if (event.which === 13) {
+          scope.$apply(function () {
+            scope.$eval(attrs.onKeypressEnter);
+          });
+          event.preventDefault();
+        }
+      });
+    };
+  })
+
   /**
    * Main Controller of the app
    */
