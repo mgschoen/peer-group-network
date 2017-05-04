@@ -97,7 +97,8 @@
                 </td>
                 <td>
                   <div class="relationButtonWrapper" ng-repeat="rt in relationTypes">
-                    <button ng-show="matrix[p.id][q.id][rt.id]" type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                    <button ng-show="matrix[p.id][q.id][rt.id]" type="button" class="btn btn-default active"
+                            data-toggle="tooltip" data-placement="top"
                             title="{{p.name + ' ' + rt.sentence + ' ' + q.name}}">
                       <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span>
                     </button>
