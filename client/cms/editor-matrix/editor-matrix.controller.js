@@ -112,7 +112,6 @@ angular.module('baemselcampCms')
       populateModel().then(function(){
         $scope.selectedKeyframe = $scope.keyframes[0];
       });
-
     };
 
     init();

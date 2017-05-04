@@ -28,9 +28,13 @@
             <div class="avatar-wrapper" style="{{'background-image:url(\''+person.imgurl+'\')'}}"></div>
           </td>
           <td>
-            <button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Bearbeiten">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
             &nbsp;
-            <button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+            <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" title="Löschen">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
           </td>
         </tr>
       </table>

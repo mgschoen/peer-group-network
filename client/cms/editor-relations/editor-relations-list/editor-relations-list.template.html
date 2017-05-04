@@ -1,4 +1,24 @@
 <div class="container" ng-controller="RelationsController">
+
+  <!-- Delete RelationType modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="deleteModalLabel">Beziehungstyp löschen</h4>
+        </div>
+        <div class="modal-body">
+          <p>Beziehungstyp <strong>{{relationTypeInFocus.sentence}}</strong> wirklich löschen?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-danger" ng-click="deleteRelationTypeInFocus()">Beziehungstyp löschen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="page-header">
     <h1>Beziehungstypen</h1>
   </div>
@@ -14,9 +34,14 @@
           <td>{{rt.sentence}}</td>
           <td><span style="{{'color:'+rt.color+';'}}">{{rt.color}}</span></td>
           <td>
-            <button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" class="btn btn-primary btn-sm" data-relationtype-id="{{rt.id}}">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
             &nbsp;
-            <button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+            <button type="button" class="btn btn-danger btn-sm" data-relationtype-id="{{rt.id}}"
+                    ng-click="triggerDeleteModal($event)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
           </td>
         </tr>
       </table>
