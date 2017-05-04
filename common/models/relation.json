@@ -13,10 +13,17 @@
       "model": "keyframe",
       "foreignKey": ""
     },
-    "persons": {
-      "type": "hasMany",
+    "personA": {
+      "type": "hasOne",
       "model": "person",
-      "foreignKey": ""
+      "foreignKey": "personAId",
+      "required": true
+    },
+    "personB": {
+      "type": "hasOne",
+      "model": "person",
+      "foreignKey": "personBId",
+      "required": true
     },
     "relationType": {
       "type": "belongsTo",

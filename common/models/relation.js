@@ -1,23 +1,27 @@
 'use strict';
 
 function personsIdentical (a, b) {
-  var aPersons = a.personId,
-      bPersons = b.personId;
-  if (!aPersons && !bPersons) return true;
-  if (!aPersons || !bPersons) return false;
-  for (var i=0; i<aPersons.length; i++) {
-    var c = aPersons[i];
-    if (bPersons.indexOf(c) < 0) {
-      return false;
-    }
+  var aPersonA = a.personAId.toString(),
+      aPersonB = a.personBId.toString(),
+      bPersonA = b.personAId.toString(),
+      bPersonB = b.personBId.toString();
+  if (aPersonA == bPersonA) {
+    console.log("aA == bA");
+    if (aPersonB == bPersonB) return true;
   }
-  for (var j=0; j<bPersons.length; j++) {
-    var d = bPersons[j];
-    if (aPersons.indexOf(d) < 0) {
-      return false;
-    }
+  if (aPersonA == bPersonB) {
+    console.log("aA == bB");
+    if (aPersonB == bPersonA) return true;
   }
-  return true;
+  if (aPersonB == bPersonA) {
+    console.log("aB == bA");
+    if (aPersonA == bPersonB) return true;
+  }
+  if (aPersonB == bPersonB) {
+    console.log("aB == bB");
+    if (aPersonA == bPersonA) return true;
+  }
+  return false;
 }
 
 module.exports = function(Relation) {
@@ -25,18 +29,16 @@ module.exports = function(Relation) {
   Relation.observe('before save', function(context, next) {
 
     var instance = context.instance,
-        instancePersons = instance.personId,
+        instancePersonA = instance.personAId,
+        instancePersonB = instance.personBId,
         instanceKeyframe = instance.keyframeId,
         instanceType = instance.relationTypeId;
 
     var existingRelations;
 
-    if (!instanceKeyframe || !instanceType || !instancePersons) {
+    if (!instanceKeyframe || !instanceType || !instancePersonA || !instancePersonB) {
       return next(new Error('Minimum requirements not fulfilled: Relation must have keyframe,'+
         ' relationType and persons'), null);
-    }
-    if (instancePersons.length !== 2) {
-      return next(new Error('Relation must have exactly two persons referenced'), null);
     }
 
     Relation.find({}, function(err, relationSearchResult){
