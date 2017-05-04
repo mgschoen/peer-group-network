@@ -1,6 +1,8 @@
 angular.module('baemselcampCms')
   .controller('PersonsController', function($scope, $http) {
 
+    $scope.persons = [];
+
     var init = function () {
       $http.get('/api/people/').then(
         function (response) {

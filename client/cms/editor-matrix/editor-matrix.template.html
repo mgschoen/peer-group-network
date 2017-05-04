@@ -1,3 +1,30 @@
+<style>
+  .relationButtonWrapper {
+    float:left;
+    margin: auto 3px;
+  }
+  .btn[data-selected] {
+    background-color: #eeeeee;
+  }
+  .dropdown {
+    float: left;
+    margin-right: 10px;
+  }
+  .instructions {
+    margin-top:16px;
+  }
+  .instruction-paragraph {
+    margin-bottom: 4px;
+  }
+  #topLevelPersonsContainer {
+    margin-top: 16px;
+  }
+  #topLevelPersonsContainer .panel-heading:hover {
+    background-color: #e5e5e5;
+    cursor:pointer;
+  }
+</style>
+
 <div class="container" ng-controller="MatrixController">
   <div class="modal fade" data-backdrop="static" data-keyboard="false" id="pleaseWait">
     <div class="modal-dialog">
@@ -7,26 +34,85 @@
       </div>
     </div>
   </div>
+
+  <!-- Headline -->
   <div class="page-header">
     <h1>Beziehungsmatrix</h1>
   </div>
+
+  <!-- Toolbar -->
   <div class="row">
-    <div class="col-md-6">
-      <div class="panel-group" id="topLevelPersonsContainer"></div>
+    <div class="col-md-12">
+      <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+          Jahr: {{selectedKeyframe.time.getFullYear() || '-'}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="Jahr auswählen">
+          <li ng-repeat="kf in keyframes">
+            <a href="" data-keyframe-id="{{kf.id}}" ng-click="selectKeyframe($event)">{{kf.time.getFullYear()}}</a>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-default" data-toggle="collapse" data-target="#instructions-row">
+        <span class="glyphicon glyphicon-question-sign"></span>
+      </button>
     </div>
-    <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title"><a href="#info" data-toggle="collapse"><span class="glyphicon glyphicon-info-sign"></span></a></h4>
-        </div>
-        <div class="panel-collapse collapse in" id="info">
-          <div class="panel-body" id="explanation">
-            <p>Klicke auf eine Person, um ihre Beziehungen zu anderen Personen einzusehen und zu bearbeiten. Beziehungen sind immer wechselseitig: Änderst du eine Beziehung von Person A zu Person B, wirkt sich das auch auf die selbe Beziehung von B zu A aus.</p>
-            <h3>Legende</h3>
-          </div>
-        </div>
+  </div>
+
+  <!-- Instructions -->
+  <div class="row collapse" id="instructions-row">
+    <div class="col-md-12">
+      <div class="well well-lg instructions">
+        <p>Klicke auf eine Person, um ihre Beziehungen zu anderen Personen einzusehen und zu bearbeiten. Beziehungen sind immer wechselseitig: Änderst du eine Beziehung von Person A zu Person B, wirkt sich das auch auf die selbe Beziehung von B zu A aus.</p>
+        <h3>Legende</h3>
+        <p ng-repeat="rt in relationTypes" class="instruction-paragraph">
+          <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span> {{rt.sentence}}
+        </p>
       </div>
     </div>
+  </div>
+
+  <!-- Matrix -->
+  <div class="row">
+    <div class="col-md-12">
+
+      <div id="topLevelPersonsContainer">
+
+        <div class="panel panel-default" ng-repeat="p in persons">
+
+          <!-- First level name -->
+          <div class="panel-heading" data-toggle="collapse" data-target="{{'#collapsible'+$index}}">{{p.name}}</div>
+
+          <table class="table collapse" id="{{'collapsible'+$index}}">
+            <tbody>
+              <tr ng-repeat="q in persons | filter:{name: '!'+p.name}">
+                <td style="vertical-align: inherit;">
+                  <span class="glyphicon glyphicon-share-alt"></span>&nbsp;&nbsp;{{q.name}}
+                </td>
+                <td>
+                  <div class="relationButtonWrapper" ng-repeat="rt in relationTypes">
+                    <button ng-if="matrix[p.id][q.id][rt.id]" type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                            title="{{p.name + ' ' + rt.sentence + ' ' + q.name}}">
+                      <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span>
+                    </button>
+                    <button ng-if="!matrix[p.id][q.id][rt.id]" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                            title="{{p.name + ' ' + rt.sentence + ' ' + q.name}}">
+                      <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
   <div class="row">
     <div class="col-md-12">
