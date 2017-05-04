@@ -1,20 +1,19 @@
 <style>
-  .relationButtonWrapper {
-    float:left;
-    margin: auto 3px;
-  }
-  .btn[data-selected] {
-    background-color: #eeeeee;
-  }
   .dropdown {
-    float: left;
-    margin-right: 10px;
+    display: inline-block;
   }
   .instructions {
     margin-top:16px;
   }
+  .matrix-toolbar .btn {
+    margin-right: 6px;
+  }
   .instruction-paragraph {
     margin-bottom: 4px;
+  }
+  .relationButtonWrapper {
+    float:left;
+    margin: auto 3px;
   }
   #topLevelPersonsContainer {
     margin-top: 16px;
@@ -26,11 +25,43 @@
 </style>
 
 <div class="container" ng-controller="MatrixController">
-  <div class="modal fade" data-backdrop="static" data-keyboard="false" id="pleaseWait">
-    <div class="modal-dialog">
+
+  <!-- New Keyframe modal -->
+  <div class="modal fade" id="newKeyframeModal" tabindex="-1" role="dialog" aria-labelledby="newKeyframeModalLabel">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header"><h4>Lade...</h4></div>
-        <div class="modal-body"><div class="progress"><div class="progress-bar progress-bar-striped active" style="width:100%"></div></div></div>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="newKeyframeModalLabel">Neues Jahr erstellen</h4>
+        </div>
+        <div class="modal-body">
+          <label for="newKeyframeYearInput">Jahr</label>
+          <input type="number" class="form-control" ng-model="newKeyframeYear" id="newKeyframeYearInput"
+                 placeholder="JJJJ" min="1970" max="3000">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Verwerfen</button>
+          <button type="button" class="btn btn-primary">Jahr erstellen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Keyframe modal -->
+  <div class="modal fade" id="deleteKeyframeModal" tabindex="-1" role="dialog" aria-labelledby="deleteKeyframeModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="deleteKeyframeModalLabel">Jahr löschen</h4>
+        </div>
+        <div class="modal-body">
+          <p>Das Jahr <strong>{{selectedKeyframe.time.getFullYear()}}</strong> wirklich löschen? Alle Beziehungen für dieses Jahr gehen verloren.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-danger">Jahr löschen</button>
+        </div>
       </div>
     </div>
   </div>
@@ -41,7 +72,7 @@
   </div>
 
   <!-- Toolbar -->
-  <div class="row">
+  <div class="row matrix-toolbar">
     <div class="col-md-12">
       <div class="dropdown">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
@@ -55,9 +86,22 @@
           </li>
         </ul>
       </div>
-      <button class="btn btn-default" data-toggle="collapse" data-target="#instructions-row">
-        <span class="glyphicon glyphicon-question-sign"></span>
-      </button>
+      <!-- TODO Add prompt and tooltip -->
+      <span data-toggle="modal" data-target="#newKeyframeModal">
+        <button class="btn btn-default" data-toggle="tooltip" title="Neues Jahr anlegen">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+      </span>
+      <span data-toggle="modal" data-target="#deleteKeyframeModal">
+        <button class="btn btn-default" data-toggle="tooltip" title="Jahr löschen">
+          <span class="glyphicon glyphicon-trash" style="color:#880000;"></span>
+        </button>
+      </span>
+      <span data-toggle="collapse" data-target="#instructions-row">
+        <button class="btn btn-default" data-toggle="tooltip" title="Hilfe">
+          <span class="glyphicon glyphicon-question-sign"></span>
+        </button>
+      </span>
     </div>
   </div>
 
