@@ -83,29 +83,34 @@
         <div class="panel panel-default" ng-repeat="p in persons">
 
           <!-- First level name -->
-          <div class="panel-heading" data-toggle="collapse" data-target="{{'#collapsible'+$index}}">{{p.name}}</div>
+          <div class="panel-heading" data-toggle="collapse" data-target="{{'#collapsible'+$index}}">
+            <a href="javascript:void(0)" data-toggle="collapse" data-target="{{'#collapsible'+$index}}">{{p.name}}</a>
+            <span class="glyphicon glyphicon-triangle-bottom pull-right"></span>
+          </div>
 
-          <table class="table collapse" id="{{'collapsible'+$index}}">
-            <tbody>
+          <div class="collapse" id="{{'collapsible'+$index}}">
+            <table class="table">
+              <tbody>
               <tr ng-repeat="q in persons | filter:{name: '!'+p.name}">
                 <td style="vertical-align: inherit;">
                   <span class="glyphicon glyphicon-share-alt"></span>&nbsp;&nbsp;{{q.name}}
                 </td>
                 <td>
                   <div class="relationButtonWrapper" ng-repeat="rt in relationTypes">
-                    <button ng-if="matrix[p.id][q.id][rt.id]" type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                    <button ng-show="matrix[p.id][q.id][rt.id]" type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top"
                             title="{{p.name + ' ' + rt.sentence + ' ' + q.name}}">
                       <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span>
                     </button>
-                    <button ng-if="!matrix[p.id][q.id][rt.id]" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                    <button ng-show="!matrix[p.id][q.id][rt.id]" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top"
                             title="{{p.name + ' ' + rt.sentence + ' ' + q.name}}">
                       <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span>
                     </button>
                   </div>
                 </td>
               </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
 
         </div>
 
