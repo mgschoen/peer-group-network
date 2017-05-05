@@ -4,6 +4,38 @@ angular.module('baemselcampCms')
     $scope.relationTypes = [];
     $scope.relationTypeInFocus = null;
 
+    $scope.inputColor = '#000000';
+    $scope.inputIcon = 'asterisk';
+    $scope.inputHasError = false;
+
+    $scope.receivedApiError = false;
+
+    $scope.triggerCreateRelationType = function () {
+      if (!$scope.inputSentence || !$scope.inputColor || !$scope.inputIcon ||
+          $scope.inputSentence == '' || $scope.inputColor == '' ||$scope.inputIcon == '') {
+        $scope.inputHasError = true;
+        return;
+      }
+      $scope.fireCreateRelationTypeRequest();
+    };
+
+    $scope.fireCreateRelationTypeRequest = function () {
+      $http.post('/api/relationtypes/', {
+        sentence: $scope.inputSentence,
+        color: $scope.inputColor,
+        icon: $scope.inputIcon
+      }).then(
+        function (response) {
+          location.hash = '/editor/relations/';
+        },
+        function (error) {
+          console.log(error);
+          $scope.receivedApiError = true;
+          $scope.apiError = error.message;
+        }
+      );
+    };
+
     $scope.triggerDeleteModal = function (event) {
       var searchId = event.currentTarget.attributes['data-relationtype-id'].value;
       var focusRelationType = $scope.relationTypes.filter(function(rt){
