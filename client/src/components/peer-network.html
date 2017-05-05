@@ -427,8 +427,8 @@
         var appearingPersons = new vis.DataSet(),
             edges = new vis.DataSet();
         relations.forEach(function(relation){
-          var firstPerson = COMPONENT.persons.get(relation.personId[0]);
-          var secondPerson = COMPONENT.persons.get(relation.personId[1]);
+          var firstPerson = COMPONENT.persons.get(relation.personAId);
+          var secondPerson = COMPONENT.persons.get(relation.personBId);
           if (firstPerson && secondPerson) {
             appearingPersons.update(firstPerson);
             appearingPersons.update(secondPerson);
@@ -436,8 +436,8 @@
             if (relationType) {
               edges.add({
                 id: relation.id,
-                from: relation.personId[0],
-                to: relation.personId[1],
+                from: relation.personAId,
+                to: relation.personBId,
                 relationType: relationType.id,
                 color: relationType.color,
                 sentence: relationType.sentence
@@ -548,7 +548,7 @@
           DOM_AVATAR.css("background-image", "url(" + selectedPerson.imgurl + ")");
           DOM_RELATIONS.empty();
           selectedPersonRelations.forEach(function (relation) {
-            var relString = relation.sentence;
+            var relString = "..." + relation.sentence + " ";
             relation.peerNames.forEach(function (peerName, idx) {
               switch (idx) {
                 case 0:

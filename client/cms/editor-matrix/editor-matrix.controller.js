@@ -13,7 +13,6 @@ angular.module('baemselcampCms')
         $http.get('/api/relations?filter[where][keyframeId]='+$scope.selectedKeyframe.id).then(
           function (response) {
             $scope.relations = response.data;
-            console.log($scope.relations);
             recomputeMatrix();
           },
           function (error) { console.log(error); }
@@ -55,10 +54,9 @@ angular.module('baemselcampCms')
         });
       });
       $.each($scope.relations, function(i,r){
-        resultingMatrix[r.personId[0]][r.personId[1]][r.relationTypeId] = true;
-        resultingMatrix[r.personId[1]][r.personId[0]][r.relationTypeId] = true;
+        resultingMatrix[r.personAId][r.personBId][r.relationTypeId] = true;
+        resultingMatrix[r.personBId][r.personAId][r.relationTypeId] = true;
       });
-      console.log(resultingMatrix);
       $scope.matrix = resultingMatrix;
       $('[data-toggle="tooltip"]').tooltip();
     };
@@ -97,14 +95,14 @@ angular.module('baemselcampCms')
       );
 
       // Get Relations from API
-      var relationsPromise = $http.get('/api/relations/').then(
+      /*var relationsPromise = $http.get('/api/relations/').then(
         function (response) {
           $scope.relations = response.data;
         },
         function (error) { console.log(error); }
-      );
+      );*/
 
-      return $q.all([relationTypesPromise, peoplePromise, keyframesPromise, relationsPromise]);
+      return $q.all([relationTypesPromise, peoplePromise, keyframesPromise]);
     };
 
     var init = function () {
