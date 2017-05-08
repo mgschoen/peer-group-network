@@ -97,12 +97,14 @@ angular.module('baemselcampCms')
   /**
    * Main Controller of the app
    */
-  .controller('MainController', function($scope, $location, $http, $cookies, $rootScope){
+  .controller('MainController', function($scope, $location, $http, $cookies, $rootScope, $timeout){
+
+    $scope.appAlerts = [];
 
     /**
      * Redirect to a relative path inside the app
      * @param path
-       */
+     */
     $scope.redirect = function (path) {
       $location.path(path);
     };
@@ -123,7 +125,31 @@ angular.module('baemselcampCms')
           console.log(error);
         }
       );
+    };
 
+    /**
+     * Opens a toast alert visible to the user for 5 seconds
+     *
+     * @param message - text to be displayed
+     * @param type - one of Bootstrap's contextual classes for alerts,
+     *               see http://getbootstrap.com/components/#alerts
+     *               (e.g. 'danger', 'success'). Defaults to 'info'.
+     */
+    $scope.fireAlert = function (message, type) {
+      var messageObject = {
+        message: message,
+        type: (type) ? type : 'info',
+        id: new Date().getTime()
+      };
+      $scope.appAlerts.push(messageObject);
+      $timeout(function(){
+        var index = $scope.appAlerts.indexOf(messageObject);
+        if (index >= 0) {
+          $scope.appAlerts.splice(index, 1);
+        } else {
+          throw 'MainController: messageObject with id '+messageObject.id+' was not found in appAlerts';
+        }
+      }, 5000);
     };
 
   });

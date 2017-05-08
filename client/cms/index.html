@@ -19,6 +19,7 @@
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/angular-route/angular-route.js"></script>
     <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.js"></script>
 
     <!-- App scripts -->
     <script src="./cms.module.js"></script>
@@ -27,6 +28,35 @@
     <script src="./editor-matrix/editor-matrix.controller.js"></script>
     <script src="./editor-persons/editor-persons.controller.js"></script>
     <script src="./editor-relations/editor-relations.controller.js"></script>
+
+    <!-- App styles -->
+    <style>
+      .alert-box {
+        bottom: 10px;
+        max-width: 500px;
+        position: fixed;
+        right: 0;
+        z-index:1000000000;
+      }
+      .alert-box .alert {
+        box-shadow: 0 3px 9px rgba(0,0,0,.3);
+        margin: 10px 20px 10px;
+        min-width: 460px;
+        opacity: 1.0;
+        transform: translate(0px);
+        transition: 0.3s ease-in-out all;
+      }
+      .alert-box .alert.ng-enter,
+      .alert-box .alert.ng-leave-active {
+        opacity: 0.0;
+        transform: translate(500px);
+      }
+      @media screen and (max-width:500px) {
+        .alert-box .alert {
+          min-width: 0;
+        }
+      }
+    </style>
 
   </head>
   <body ng-controller="MainController">
@@ -63,6 +93,11 @@
 
     <!-- Angular view -->
     <div ng-view></div>
+
+    <div class="alert-box">
+      <div class="{{'alert alert-'+alert.type}}" role="alert"
+           ng-repeat="alert in appAlerts">{{alert.message}}</div>
+    </div>
 
   </body>
 </html>

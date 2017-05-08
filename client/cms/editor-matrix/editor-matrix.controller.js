@@ -94,14 +94,6 @@ angular.module('baemselcampCms')
         function (error) { console.log(error); }
       );
 
-      // Get Relations from API
-      /*var relationsPromise = $http.get('/api/relations/').then(
-        function (response) {
-          $scope.relations = response.data;
-        },
-        function (error) { console.log(error); }
-      );*/
-
       return $q.all([relationTypesPromise, peoplePromise, keyframesPromise]);
     };
 
