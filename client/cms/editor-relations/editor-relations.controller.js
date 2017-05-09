@@ -26,12 +26,12 @@ angular.module('baemselcampCms')
         icon: $scope.inputIcon
       }).then(
         function (response) {
-          location.hash = '/editor/relations/';
+          $scope.redirect('/editor/relations/');
+          $scope.fireAlert('Beziehungstyp "'+response.data.sentence+'" erfolgreich gespeichert', 'success');
         },
         function (error) {
           console.log(error);
-          $scope.receivedApiError = true;
-          $scope.apiError = error.message;
+          $scope.fireAlert('Fehler beim Speichern: '+error.data.error.message, 'danger');
         }
       );
     };
@@ -58,9 +58,11 @@ angular.module('baemselcampCms')
         function (response) {
           $('#deleteModal').modal('hide');
           populateModel();
+          $scope.fireAlert('Beziehungstyp gelöscht');
         },
         function (error) {
           console.log(error);
+          $scope.fireAlert('Fehler beim Löschen: '+error.data.error.message, 'danger');
         }
       );
     };

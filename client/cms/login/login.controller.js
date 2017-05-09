@@ -21,10 +21,12 @@ angular.module('baemselcampCms')
             $rootScope.credentials  = credentials;
             $cookies.putObject('bc-credentials', credentials);
             $http.defaults.headers.common['Authorization'] = credentials.accessToken;
-            location.hash = '/editor';
+            $scope.redirect('/editor');
+            $scope.fireAlert('Login erfolgreich', 'success');
           },
           function (error) {
             $scope.hasError = true;
+            $scope.fireAlert('Fehler beim Login: '+error.data.error.message, 'danger');
           });
 
     }

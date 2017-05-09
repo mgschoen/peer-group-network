@@ -120,9 +120,11 @@ angular.module('baemselcampCms')
           $rootScope.credentials = null;
           $http.defaults.headers.common['Authorization'] = '';
           $scope.redirect('/login');
+          $scope.fireAlert('Logout erfolgreich');
         },
         function (error) {
           console.log(error);
+          $scope.fireAlert('Fehler beim Logout: '+error.data.error.message, 'danger');
         }
       );
     };
@@ -141,7 +143,7 @@ angular.module('baemselcampCms')
         type: (type) ? type : 'info',
         id: new Date().getTime()
       };
-      $scope.appAlerts.push(messageObject);
+      $scope.appAlerts.unshift(messageObject);
       $timeout(function(){
         var index = $scope.appAlerts.indexOf(messageObject);
         if (index >= 0) {
