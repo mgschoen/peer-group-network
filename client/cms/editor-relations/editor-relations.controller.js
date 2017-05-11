@@ -41,16 +41,46 @@ angular.module('baemselcampCms')
       var focusRelationType = $scope.relationTypes.filter(function(rt){
         return rt.id == searchId;
       });
+      var msg = '';
       if (focusRelationType.length === 0) {
-        throw 'No RelationType with ID '+searchId+' found';
+        msg = 'No RelationType with ID '+searchId+' found';
+        $scope.fireAlert(msg, 'error');
+        throw msg;
         return;
       }
       if (focusRelationType.length > 1) {
-        throw 'ID not unique. Multiple RelationTypes with ID '+searchId+' found';
+        msg = 'ID not unique. Multiple RelationTypes with ID '+searchId+' found';
+        $scope.fireAlert(msg, 'error');
+        throw msg;
         return;
       }
       $scope.relationTypeInFocus = focusRelationType[0];
       $('#deleteModal').modal('show');
+    };
+
+    $scope.triggerEditModal = function (event) {
+      var searchId = event.currentTarget.attributes['data-relationtype-id'].value;
+      var focusRelationType = $scope.relationTypes.filter(function(rt){
+        return rt.id == searchId;
+      });
+      var msg = '';
+      if (focusRelationType.length === 0) {
+        msg = 'No RelationType with ID '+searchId+' found';
+        $scope.fireAlert(msg, 'error');
+        throw msg;
+        return;
+      }
+      if (focusRelationType.length > 1) {
+        msg = 'ID not unique. Multiple RelationTypes with ID '+searchId+' found';
+        $scope.fireAlert(msg, 'error');
+        throw msg;
+        return;
+      }
+      var focus = $scope.relationTypeInFocus = focusRelationType[0];
+      $scope.inputSentence = focus.sentence;
+      $scope.inputColor = focus.color;
+      $scope.inputIcon = focus.icon;
+      $('#editModal').modal('show');
     };
 
     $scope.deleteRelationTypeInFocus = function () {
@@ -67,7 +97,29 @@ angular.module('baemselcampCms')
       );
     };
 
+    $scope.updateRelationTypeInFocus = function () {
+      $http.patch('/api/relationtypes/'+$scope.relationTypeInFocus.id, {
+        sentence: $scope.inputSentence,
+        color: $scope.inputColor,
+        icon: $scope.inputIcon
+      }).then(
+        function(response){
+          $('#editModal').modal('hide');
+          populateModel();
+          $scope.fireAlert('Beziehungstyp gespeichert', 'success');
+        },
+        function(error){
+          console.log(error);
+          $scope.fireAlert('Fehler beim Speichern: '+error.data.error.message, 'danger');
+        }
+      );
+    };
+
     $('#deleteModal').on('hide.bs.modal', function(){
+      $scope.relationTypeInFocus = null;
+    });
+
+    $('#editModal').on('hide.bs.modal', function(){
       $scope.relationTypeInFocus = null;
     });
 

@@ -1,3 +1,12 @@
+<style>
+  .color-preview {
+    border: 1px solid black;
+    display:inline-block;
+    height: 10px;
+    width: 10px;
+  }
+</style>
+
 <div class="container" ng-controller="RelationsController">
 
   <!-- Delete RelationType modal -->
@@ -19,6 +28,48 @@
     </div>
   </div>
 
+  <!-- Edit RelationType modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="editModalLabel">Beziehungstyp bearbeiten</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <form role="form">
+              <div class="form-group">
+                <label class="control-label" for="title">Beschreibender Satz <small class="text-muted">(In der Grafik sichtbar)</small></label>
+                <input type="text" class="form-control" id="title" ng-model="inputSentence">
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="color">
+                  <span class="color-preview" style="{{'background-color:'+inputColor+';'}}"></span>
+                  Linienfarbe
+                </label>
+                <input type="text" class="form-control" id="color" ng-model="inputColor">
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="icon">
+                  <span class="{{'glyphicon glyphicon-'+inputIcon}}"
+                        style="{{'color:'+inputColor+';'}}"></span>
+                  Icon &ndash;
+                  <a href="http://getbootstrap.com/components/#glyphicons-glyphs" target="_blank">Vorschau-Liste</a>
+                </label>
+                <input type="text" class="form-control" id="icon" ng-model="inputIcon">
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-success" ng-click="updateRelationTypeInFocus()">Beziehungstyp speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="page-header">
     <h1>Beziehungstypen</h1>
   </div>
@@ -34,7 +85,8 @@
           <td>{{rt.sentence}}</td>
           <td><span style="{{'color:'+rt.color+';'}}">{{rt.color}}</span></td>
           <td>
-            <button type="button" class="btn btn-primary btn-sm" data-relationtype-id="{{rt.id}}">
+            <button type="button" class="btn btn-primary btn-sm" data-relationtype-id="{{rt.id}}"
+                    ng-click="triggerEditModal($event)">
               <span class="glyphicon glyphicon-pencil"></span>
             </button>
             &nbsp;
@@ -49,7 +101,7 @@
         <button type="button"
                 class="btn btn-success btn-sm"
                 id="newRelation"
-                ng-click="redirect('/editor/relations/new')"><span class="glyphicon glyphicon-link"></span> &nbsp;Neuer Beziehungstyp</button>
+                ng-click="redirect('/editor/relations/new')"><span class="glyphicon glyphicon-plus"></span> &nbsp;Neuer Beziehungstyp</button>
       </p>
     </div>
   </div>
