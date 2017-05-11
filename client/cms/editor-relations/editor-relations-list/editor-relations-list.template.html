@@ -75,6 +75,11 @@
   </div>
   <div class="row">
     <div class="col-md-12">
+      <p class="text-left">
+        <button type="button" class="btn btn-success btn-sm" ng-click="redirect('/editor/relations/new')">
+          <span class="glyphicon glyphicon-plus"></span> &nbsp;Neuer Beziehungstyp
+        </button>
+      </p>
       <table class="table table-hover" id="relationslist">
         <tr>
           <th>Beschreibender Satz <small class="text-muted">(In der Grafik sichtbar)</small></th>
@@ -98,10 +103,9 @@
         </tr>
       </table>
       <p class="text-left">
-        <button type="button"
-                class="btn btn-success btn-sm"
-                id="newRelation"
-                ng-click="redirect('/editor/relations/new')"><span class="glyphicon glyphicon-plus"></span> &nbsp;Neuer Beziehungstyp</button>
+        <button type="button" class="btn btn-success btn-sm" ng-click="redirect('/editor/relations/new')">
+          <span class="glyphicon glyphicon-plus"></span> &nbsp;Neuer Beziehungstyp
+        </button>
       </p>
     </div>
   </div>

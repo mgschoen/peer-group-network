@@ -27,7 +27,7 @@ angular.module('baemselcampCms')
       }).then(
         function (response) {
           $scope.redirect('/editor/relations/');
-          $scope.fireAlert('Beziehungstyp "'+response.data.sentence+'" erfolgreich gespeichert', 'success');
+          $scope.fireAlert('Beziehungstyp "'+response.data.sentence+'" erfolgreich angelegt', 'success');
         },
         function (error) {
           console.log(error);
