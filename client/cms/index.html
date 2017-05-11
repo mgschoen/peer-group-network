@@ -72,13 +72,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#/">BCMS</a>
+          <a class="navbar-brand" href="#/">Bämselcamp CMS</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-area">
           <ul class="nav navbar-nav" ng-if="credentials">
-            <li><a href="#/editor/matrix">Matrix</a></li>
-            <li><a href="#/editor/persons">Personen</a></li>
-            <li><a href="#/editor/relations">Beziehungstypen</a></li>
+            <li ng-if="getView() == 'matrix' || !getView()" class="active"><a href="#/editor/matrix">Matrix</a></li>
+            <li ng-if="getView() != 'matrix' && getView()"><a href="#/editor/matrix">Matrix</a></li>
+            <li ng-if="getView() == 'persons'" class="active"><a href="#/editor/persons">Personen</a></li>
+            <li ng-if="getView() != 'persons'"><a href="#/editor/persons">Personen</a></li>
+            <li ng-if="getView() == 'relations'" class="active"><a href="#/editor/relations">Beziehungstypen</a></li>
+            <li ng-if="getView() != 'relations'"><a href="#/editor/relations">Beziehungstypen</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" ng-if="credentials">
             <li><a href="/" target="_blank"><span class="glyphicon glyphicon-stats"></span> Grafik anzeigen</a></li>

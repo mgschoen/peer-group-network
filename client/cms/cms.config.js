@@ -151,4 +151,20 @@ angular.module('baemselcampCms')
       }, 5000);
     };
 
+    $scope.getView = function () {
+      var path = $location.path();
+      var pathComponents = path.split('/');
+      var i = 0,  view;
+      while (i < pathComponents.length) {
+        if (pathComponents[i] == 'editor') {
+          view = pathComponents[i+1];
+          break;
+        }
+        i++;
+      }
+      return view;
+    };
+
+    console.log($location);
+
   });

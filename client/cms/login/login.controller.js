@@ -29,6 +29,6 @@ angular.module('baemselcampCms')
             $scope.fireAlert('Fehler beim Login: '+error.data.error.message, 'danger');
           });
 
-    }
+    };
 
   });
