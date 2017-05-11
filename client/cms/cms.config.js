@@ -39,9 +39,6 @@ angular.module('baemselcampCms')
         .when('/editor/relations/new', {
           templateUrl: './editor-relations/editor-relations-new/editor-relations-new.template.html'
         })
-        .when('/editor/relations/edit', {
-          templateUrl: './editor-relations/editor-relations-edit/editor-relations-edit.template.html'
-        })
         .otherwise('/editor');
 
     }])
