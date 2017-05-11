@@ -50,6 +50,7 @@ angular.module('baemselcampCms')
       $.each(personIds, function(i,pi1) {
         resultingMatrix[pi1] = {};
         $.each(personIds, function(j,pi2){
+          // $.extend({},array) deep copies the array
           resultingMatrix[pi1][pi2] = $.extend({},relationTypesList);
         });
       });
@@ -58,7 +59,6 @@ angular.module('baemselcampCms')
         resultingMatrix[r.personBId][r.personAId][r.relationTypeId] = true;
       });
       $scope.matrix = resultingMatrix;
-      $('[data-toggle="tooltip"]').tooltip();
     };
 
     var populateModel = function () {

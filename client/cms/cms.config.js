@@ -151,6 +151,11 @@ angular.module('baemselcampCms')
       }, 5000);
     };
 
+    /**
+     * Returns the component of the current URL that represents
+     * the active controller, e.g. 'matrix'
+     * @returns {String}
+     */
     $scope.getView = function () {
       var path = $location.path();
       var pathComponents = path.split('/');
@@ -164,7 +169,5 @@ angular.module('baemselcampCms')
       }
       return view;
     };
-
-    console.log($location);
 
   });
