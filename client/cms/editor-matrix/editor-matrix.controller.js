@@ -54,6 +54,23 @@ angular.module('baemselcampCms')
       )
     };
 
+    $scope.triggerCreateKeyframe = function () {
+      var time = new Date($scope.inputNewKeyframeYear + '-02-01 00:00:00');
+      $http.post('/api/keyframes/', {
+        time: time
+      }).then(
+        function(response){
+          $('#newKeyframeModal').modal('hide');
+          var year = new Date(response.data.time).getFullYear();
+          $scope.fireAlert(year + ' erfolgreich angelegt', 'success');
+          populateModel();
+        },
+        function(error){
+          $scope.fireAlert(error.data.error.message, 'danger');
+        }
+      )
+    };
+
     var recomputeMatrix = function () {
       var relationTypesList = {};
       $.each($scope.relationTypes, function(i,rt){
