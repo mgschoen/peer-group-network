@@ -38,6 +38,22 @@ angular.module('baemselcampCms')
       }
     };
 
+    $scope.deleteSelectedKeyframe = function () {
+      $http.delete('/api/keyframes/'+$scope.selectedKeyframe.id).then(
+        function(response){
+          $('#deleteKeyframeModal').modal('hide');
+          $scope.fireAlert('Jahr gelöscht');
+          // Call init() instead of populateModel() in order to reassign
+          // selected keyframe after reloading the data
+          init();
+        },
+        function(error){
+          console.log(error);
+          $scope.fireAlert('Failed to delete keyframe: '+error.data.error.message, 'danger');
+        }
+      )
+    };
+
     var recomputeMatrix = function () {
       var relationTypesList = {};
       $.each($scope.relationTypes, function(i,rt){
