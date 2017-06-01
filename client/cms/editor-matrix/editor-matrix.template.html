@@ -93,7 +93,7 @@
         </button>
       </span>
       <span data-toggle="modal" data-target="#deleteKeyframeModal">
-        <button class="btn btn-default" data-toggle="tooltip" title="Jahr löschen">
+        <button class="btn btn-default" data-toggle="tooltip" title="Ausgewähltes Jahr löschen">
           <span class="glyphicon glyphicon-trash" style="color:#880000;"></span>
         </button>
       </span>
@@ -142,11 +142,13 @@
                 <td>
                   <div class="relationButtonWrapper" ng-repeat="rt in relationTypes">
                     <button ng-show="matrix[p.id][q.id][rt.id]" type="button" class="btn btn-default active"
+                            ng-click="setRelationInMatrix(p.id, q.id, rt.id, false)"
                             data-toggle="tooltip" data-placement="top"
                             title="{{p.name + ' ' + rt.sentence + ' ' + q.name}}">
                       <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span>
                     </button>
-                    <button ng-show="!matrix[p.id][q.id][rt.id]" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                    <button ng-show="!matrix[p.id][q.id][rt.id]" type="button" class="btn btn-default" data-toggle="tooltip"
+                            data-placement="top" ng-click="setRelationInMatrix(p.id, q.id, rt.id, true)"
                             title="{{p.name + ' ' + rt.sentence + ' ' + q.name}}">
                       <span class="{{'glyphicon glyphicon-'+rt.icon}}" style="{{'color:'+rt.color+';'}}"></span>
                     </button>

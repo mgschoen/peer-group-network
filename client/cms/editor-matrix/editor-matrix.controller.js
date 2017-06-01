@@ -24,6 +24,10 @@ angular.module('baemselcampCms')
       $('[data-toggle="tooltip"]').tooltip();
     });
 
+    /* * * * * * * * * * * * * * * * * */
+    /* K E Y F R A M E   M E T H O D S */
+    /* * * * * * * * * * * * * * * * * */
+
     $scope.selectKeyframe = function (event) {
       var selectedId = event.target.attributes['data-keyframe-id'].nodeValue;
       var selectedKeyframe = $scope.keyframes.filter(function(kf){
@@ -64,11 +68,25 @@ angular.module('baemselcampCms')
           var year = new Date(response.data.time).getFullYear();
           $scope.fireAlert(year + ' erfolgreich angelegt', 'success');
           populateModel();
+          $scope.inputNewKeyframeYear = '';
         },
         function(error){
           $scope.fireAlert(error.data.error.message, 'danger');
         }
       )
+    };
+
+    /* * * * * * * * * * * * * * * * * */
+    /* M A T R I X   M E T H O D S     */
+    /* * * * * * * * * * * * * * * * * */
+
+    $scope.setRelationInMatrix = function (from, to, relation, value) {
+      if (typeof from != 'string' || typeof to != 'string' || typeof relation != 'string'
+          || typeof value != 'boolean') {
+        return new Error('IDs must be strings and value must be boolean');
+      }
+      $scope.matrix[from][to][relation] = value;
+      $scope.matrix[to][from][relation] = value;
     };
 
     var recomputeMatrix = function () {
