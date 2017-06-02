@@ -102,6 +102,14 @@
           <span class="glyphicon glyphicon-question-sign"></span>
         </button>
       </span>
+      <!-- Save button, disabled if no pending changes -->
+      <button type="button" class="btn btn-success" id="saveMatrix" ng-if="hasPendingChanges"
+              ng-click="storeMatrixChanges()">
+        <span class="glyphicon glyphicon-ok"></span> &nbsp;Matrix speichern</span>
+      </button>
+      <button type="button" class="btn btn-success disabled" id="saveMatrix" ng-if="!hasPendingChanges">
+        <span class="glyphicon glyphicon-ok"></span> &nbsp;Matrix speichern</span>
+      </button>
     </div>
   </div>
 
@@ -169,7 +177,14 @@
   <div class="row">
     <div class="col-md-12">
       <p>
-        <button type="button" class="btn btn-success" id="saveMatrix"><span class="glyphicon glyphicon-ok"></span> &nbsp;Matrix speichern</span></button>
+        <!-- Save button, disabled if no pending changes -->
+        <button type="button" class="btn btn-success" id="saveMatrix" ng-if="hasPendingChanges"
+                ng-click="storeMatrixChanges()">
+          <span class="glyphicon glyphicon-ok"></span> &nbsp;Matrix speichern</span>
+        </button>
+        <button type="button" class="btn btn-success disabled" id="saveMatrix" ng-if="!hasPendingChanges">
+          <span class="glyphicon glyphicon-ok"></span> &nbsp;Matrix speichern</span>
+        </button>
       </p>
     </div>
   </div>

@@ -134,7 +134,7 @@ angular.module('baemselcampCms')
      *               see http://getbootstrap.com/components/#alerts
      *               (e.g. 'danger', 'success'). Defaults to 'info'.
      */
-    $scope.fireAlert = function (message, type) {
+    $scope.fireAlert = function (message, type, duration) {
       var messageObject = {
         message: message,
         type: (type) ? type : 'info',
@@ -148,7 +148,7 @@ angular.module('baemselcampCms')
         } else {
           throw 'MainController: messageObject with id '+messageObject.id+' was not found in appAlerts';
         }
-      }, 5000);
+      }, duration || 5000);
     };
 
     /**
