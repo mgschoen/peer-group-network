@@ -15,6 +15,9 @@ angular.module('baemselcampCms')
     };
 
     $scope.fireCreatePersonRequest = function () {
+
+      $scope.setApplicationBusy(true);
+
       $http.post('/api/people/', {
         name: $scope.inputName,
         imgurl: $scope.inputImgurl
@@ -22,10 +25,12 @@ angular.module('baemselcampCms')
         function (response) {
           $scope.redirect('/editor/persons/');
           $scope.fireAlert('"'+response.data.name+'" erfolgreich angelegt', 'success');
+          $scope.setApplicationBusy(false);
         },
         function (error) {
           console.log(error);
           $scope.fireAlert('Fehler beim Speichern: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };
@@ -77,20 +82,28 @@ angular.module('baemselcampCms')
     };
 
     $scope.deletePersonInFocus = function () {
+
+      $scope.setApplicationBusy(true);
+
       $http.delete('/api/people/'+$scope.personInFocus.id).then(
         function (response) {
           $('#deleteModal').modal('hide');
           populateModel();
           $scope.fireAlert('Person gelöscht');
+          $scope.setApplicationBusy(false);
         },
         function (error) {
           console.log(error);
           $scope.fireAlert('Fehler beim Löschen: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };
 
     $scope.updatePersonInFocus = function () {
+
+      $scope.setApplicationBusy(true);
+
       $http.patch('/api/people/'+$scope.personInFocus.id, {
         sentence: $scope.inputName,
         imgurl: $scope.inputImgurl
@@ -99,10 +112,12 @@ angular.module('baemselcampCms')
           $('#editModal').modal('hide');
           populateModel();
           $scope.fireAlert('Person gespeichert', 'success');
+          $scope.setApplicationBusy(false);
         },
         function(error){
           console.log(error);
           $scope.fireAlert('Fehler beim Speichern: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };
@@ -116,12 +131,16 @@ angular.module('baemselcampCms')
     });
 
     var populateModel = function () {
+      $scope.setApplicationBusy(true);
       $http.get('/api/people/').then(
         function (response) {
           $scope.persons = response.data;
+          $scope.setApplicationBusy(false);
         },
         function (error) {
           console.log(error);
+          $scope.fireAlert('Fehler beim Laden. Bitte versuche es noch einmal.', 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };

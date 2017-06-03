@@ -23,12 +23,18 @@ angular.module('baemselcampCms')
 
     $scope.$watch('selectedKeyframe', function(){
       if ($scope.selectedKeyframe && $scope.selectedKeyframe.id) {
+        $scope.setApplicationBusy(true);
         $http.get('/api/relations?filter[where][keyframeId]='+$scope.selectedKeyframe.id).then(
           function (response) {
             $scope.relations = response.data;
             recomputeMatrix();
+            $scope.setApplicationBusy(false);
           },
-          function (error) { console.log(error); }
+          function (error) {
+            console.log(error);
+            $scope.fireAlert('Fehler beim Laden. Bitte versuche es noch einmal.', 'danger');
+            $scope.setApplicationBusy(false);
+          }
         )
       }
     });
@@ -54,6 +60,9 @@ angular.module('baemselcampCms')
     };
 
     $scope.deleteSelectedKeyframe = function () {
+
+      $scope.setApplicationBusy(true);
+
       $http.delete('/api/keyframes/'+$scope.selectedKeyframe.id).then(
         function(response){
           $('#deleteKeyframeModal').modal('hide');
@@ -65,11 +74,15 @@ angular.module('baemselcampCms')
         function(error){
           console.log(error);
           $scope.fireAlert('Failed to delete keyframe: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       )
     };
 
     $scope.triggerCreateKeyframe = function () {
+
+      $scope.setApplicationBusy(true);
+
       var time = new Date($scope.inputNewKeyframeYear + '-02-01 00:00:00');
       $http.post('/api/keyframes/', {
         time: time
@@ -78,11 +91,14 @@ angular.module('baemselcampCms')
           $('#newKeyframeModal').modal('hide');
           var year = new Date(response.data.time).getFullYear();
           $scope.fireAlert(year + ' erfolgreich angelegt', 'success');
-          populateModel();
+          populateModel().then(function(){
+            $scope.setApplicationBusy(false);
+          });
           $scope.inputNewKeyframeYear = '';
         },
         function(error){
           $scope.fireAlert(error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       )
     };
@@ -122,6 +138,9 @@ angular.module('baemselcampCms')
     };
 
     $scope.storeMatrixChanges = function () {
+
+      $scope.setApplicationBusy(true);
+
       // Remove all those updates from the list that would not change the stored value
       var updateQueue = [];
       var updatePromises = [];
@@ -148,11 +167,13 @@ angular.module('baemselcampCms')
           $scope.pendingChanges = {};
           $scope.hasPendingChanges = false;
           $scope.fireAlert('Matrix gespeichert', 'success');
+          $scope.setApplicationBusy(false);
         })
         .catch(function(err){
           console.error(err);
           $scope.fireAlert('Matrix konnte nicht vollständig gespeichert werden. Bitte versuche es '
             +'erneut oder lade die Seite neu.', 'danger', 8000);
+          $scope.setApplicationBusy(false);
         });
     };
 
@@ -257,8 +278,11 @@ angular.module('baemselcampCms')
 
     var init = function () {
 
+      $scope.setApplicationBusy(true);
+
       populateModel().then(function(){
         $scope.selectedKeyframe = $scope.keyframes[0];
+        $scope.setApplicationBusy(false);
       });
     };
 

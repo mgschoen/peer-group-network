@@ -49,6 +49,8 @@ angular.module('baemselcampCms')
   .run(['$cookies', '$rootScope', '$location', '$http',
     function($cookies, $rootScope, $location, $http){
 
+      $rootScope.applicationBusy = true;
+
       var credentials = $cookies.getObject('bc-credentials');
       $rootScope.credentials = credentials;
       if (credentials && credentials.userId && credentials.accessToken) {
@@ -57,6 +59,7 @@ angular.module('baemselcampCms')
           // Success case
           function (response) {
             // all is fine
+            $rootScope.applicationBusy = false;
           },
           // Error case (credentials invalid)
           function (error) {
@@ -64,6 +67,7 @@ angular.module('baemselcampCms')
             $rootScope.credentials = null;
             $http.defaults.headers.common['Authorization'] = '';
             $location.path('/login');
+            $rootScope.applicationBusy = false;
           }
         );
       }
@@ -111,6 +115,8 @@ angular.module('baemselcampCms')
      */
     $scope.fireLogoutRequest = function () {
 
+      $scope.setApplicationBusy(true);
+
       $http.post('/api/users/logout').then(
         function (response) {
           $cookies.remove('bc-credentials');
@@ -118,10 +124,12 @@ angular.module('baemselcampCms')
           $http.defaults.headers.common['Authorization'] = '';
           $scope.redirect('/login');
           $scope.fireAlert('Logout erfolgreich');
+          $scope.setApplicationBusy(false);
         },
         function (error) {
           console.log(error);
           $scope.fireAlert('Fehler beim Logout: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };
@@ -149,6 +157,15 @@ angular.module('baemselcampCms')
           throw 'MainController: messageObject with id '+messageObject.id+' was not found in appAlerts';
         }
       }, duration || 5000);
+    };
+
+    /**
+     * Setter for applicationBusy flag. Use to ensure that flag is set
+     * in the MainController's scope instead of a child scope.
+     * @param isBusy {boolean}
+       */
+    $scope.setApplicationBusy = function (isBusy) {
+      $rootScope.applicationBusy = isBusy;
     };
 
     /**

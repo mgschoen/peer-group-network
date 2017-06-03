@@ -51,6 +51,13 @@
         opacity: 0.0;
         transform: translate(500px);
       }
+      .loading-animation-container {
+        background: radial-gradient(closest-side, rgba(255,255,255,1) 10%, rgba(255,255,255,0) 100%);
+        bottom: 10px;
+        position: fixed;
+        right: 10px;
+        z-index: 1000000;
+      }
       @media screen and (max-width:500px) {
         .alert-box .alert {
           min-width: 0;
@@ -100,6 +107,10 @@
     <div class="alert-box">
       <div class="{{'alert alert-'+alert.type}}" role="alert"
            ng-repeat="alert in appAlerts">{{alert.message}}</div>
+    </div>
+
+    <div class="loading-animation-container" ng-if="applicationBusy">
+      <img src="../asset/gear.svg" class="loading-animation">
     </div>
 
   </body>

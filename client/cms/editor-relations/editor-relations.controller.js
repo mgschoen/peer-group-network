@@ -20,6 +20,9 @@ angular.module('baemselcampCms')
     };
 
     $scope.fireCreateRelationTypeRequest = function () {
+
+      $scope.setApplicationBusy(true);
+
       $http.post('/api/relationtypes/', {
         sentence: $scope.inputSentence,
         color: $scope.inputColor,
@@ -28,10 +31,12 @@ angular.module('baemselcampCms')
         function (response) {
           $scope.redirect('/editor/relations/');
           $scope.fireAlert('Beziehungstyp "'+response.data.sentence+'" erfolgreich angelegt', 'success');
+          $scope.setApplicationBusy(false);
         },
         function (error) {
           console.log(error);
           $scope.fireAlert('Fehler beim Speichern: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };
@@ -84,20 +89,28 @@ angular.module('baemselcampCms')
     };
 
     $scope.deleteRelationTypeInFocus = function () {
+
+      $scope.setApplicationBusy(true);
+
       $http.delete('/api/relationtypes/'+$scope.relationTypeInFocus.id).then(
         function (response) {
           $('#deleteModal').modal('hide');
           populateModel();
           $scope.fireAlert('Beziehungstyp gelöscht');
+          $scope.setApplicationBusy(false);
         },
         function (error) {
           console.log(error);
           $scope.fireAlert('Fehler beim Löschen: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };
 
     $scope.updateRelationTypeInFocus = function () {
+
+      $scope.setApplicationBusy(true);
+
       $http.patch('/api/relationtypes/'+$scope.relationTypeInFocus.id, {
         sentence: $scope.inputSentence,
         color: $scope.inputColor,
@@ -107,10 +120,12 @@ angular.module('baemselcampCms')
           $('#editModal').modal('hide');
           populateModel();
           $scope.fireAlert('Beziehungstyp gespeichert', 'success');
+          $scope.setApplicationBusy(false);
         },
         function(error){
           console.log(error);
           $scope.fireAlert('Fehler beim Speichern: '+error.data.error.message, 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };
@@ -124,13 +139,19 @@ angular.module('baemselcampCms')
     });
 
     var populateModel = function () {
+
+      $scope.setApplicationBusy(true);
+
       return $http.get('/api/relationtypes/').then(
         function (response) {
           $scope.relationTypes = response.data;
           $('[data-toggle="tooltip"]').tooltip();
+          $scope.setApplicationBusy(false);
         },
         function (error) {
           console.log(error);
+          $scope.fireAlert('Fehler beim Laden. Bitte versuche es noch einmal.', 'danger');
+          $scope.setApplicationBusy(false);
         }
       );
     };

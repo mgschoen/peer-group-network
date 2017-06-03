@@ -5,6 +5,8 @@ angular.module('baemselcampCms')
 
     $scope.fireLoginRequest = function () {
 
+      $scope.setApplicationBusy(true);
+
       var requestBody = {
         username: $scope.username,
         password: $scope.password
@@ -23,10 +25,12 @@ angular.module('baemselcampCms')
             $http.defaults.headers.common['Authorization'] = credentials.accessToken;
             $scope.redirect('/editor');
             $scope.fireAlert('Login erfolgreich', 'success');
+            $scope.setApplicationBusy(false);
           },
           function (error) {
             $scope.hasError = true;
             $scope.fireAlert('Fehler beim Login: '+error.data.error.message, 'danger');
+            $scope.setApplicationBusy(false);
           });
 
     };
