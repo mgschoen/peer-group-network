@@ -140,9 +140,6 @@ module.exports = function(Relation) {
       {arg: 'relationTypeId', type: 'string'},
       {arg: 'keyframeId', type: 'string'}
     ],
-    http: {
-      verb: 'del'
-    },
     returns: {arg: 'count', type: 'number'}
   });
 

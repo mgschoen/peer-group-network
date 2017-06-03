@@ -193,7 +193,7 @@ angular.module('baemselcampCms')
             resolve(response.data);
           },
           function(error){
-            $scope.fireAlert('Fehler beim Speichern', 'danger');
+            $scope.fireAlert('Fehler beim Erstellen einer Beziehung', 'danger');
             reject(error.data.error);
           }
         );
@@ -201,9 +201,22 @@ angular.module('baemselcampCms')
     };
 
     var deleteRelation = function (from, to, relationType) {
-      // TODO    determine the relationId from the relations array
-      // TODO      OR: write a remote method that does all the work (preferable bec of abstraction from application logic)
-      // TODO    fire delete request and return a promise
+      return $q(function(resolve, reject){
+        $http.post('/api/relations/destroyByValues/', {
+          keyframeId: $scope.selectedKeyframe.id,
+          relationTypeId: relationType,
+          personAId: from,
+          personBId: to
+        }).then(
+          function(response){
+            resolve(response.data);
+          },
+          function (error) {
+            $scope.fireAlert('Fehler beim Löschen einer Beziehung', 'danger');
+            reject(error.data.error);
+          }
+        );
+      });
     };
 
     var populateModel = function () {
