@@ -78,4 +78,69 @@ module.exports = function(Relation) {
       next();
     });
   });
+
+  Relation.destroyByValues = function (personAId, personBId, relationTypeId, keyframeId, callback) {
+
+    if (typeof personAId !== 'string' || typeof personBId !== 'string'
+      || typeof relationTypeId !== 'string' || typeof keyframeId !== 'string') {
+      return new Error('ID parameters must be strings');
+    }
+
+    Relation.find(null, function(err, relationSearchResult) {
+
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
+      var matchingRelations = [];
+
+      // Since where filter does not work in query (for whatever reason?!)
+      // we need to search for the matching relation manually
+      relationSearchResult.forEach(function(relation){
+        if (
+          relation.keyframeId.toString() === keyframeId
+          && relation.relationTypeId.toString() === relationTypeId
+          && (
+            relation.personAId.toString() === personAId && relation.personBId.toString() === personBId
+            || relation.personAId.toString() === personBId && relation.personBId.toString() === personAId
+          )
+        ) {
+          matchingRelations.push(relation);
+        }
+      });
+
+      var promises = [];
+
+      matchingRelations.forEach(function(match){
+        promises.push(new Promise(function(resolve, reject){
+          match.destroy(function(err){
+            if (err) {
+              reject();
+            } else {
+              resolve();
+            }
+          });
+        }));
+      });
+
+      Promise.all(promises)
+        .then(function(){
+          callback(null, matchingRelations.length);
+        });
+
+    });
+
+  };
+
+  Relation.remoteMethod('destroyByValues', {
+    accepts: [
+      {arg: 'personAId', type: 'string'},
+      {arg: 'personBId', type: 'string'},
+      {arg: 'relationTypeId', type: 'string'},
+      {arg: 'keyframeId', type: 'string'}
+    ],
+    returns: {arg: 'count', type: 'number'}
+  });
+
 };
