@@ -18,6 +18,7 @@
     "connector": "loopback-component-storage",
     "provider": "filesystem",
     "root": "./storage/",
-    "nameConflict": "makeUnique"
+    "nameConflict": "makeUnique",
+    "allowedContentTypes": ["image/jpg", "image/jpeg"]
   }
 }
