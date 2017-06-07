@@ -50,5 +50,9 @@
   "relation": {
     "dataSource": "mongo",
     "public": true
+  },
+  "storage": {
+    "dataSource": "localstorage",
+    "public": true
   }
 }

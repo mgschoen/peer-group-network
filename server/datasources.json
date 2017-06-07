@@ -12,5 +12,12 @@
     "name": "mongo",
     "user": "",
     "connector": "mongodb"
+  },
+  "localstorage": {
+    "name": "localstorage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./storage/",
+    "nameConflict": "makeUnique"
   }
 }
