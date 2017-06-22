@@ -8,6 +8,9 @@
     text-align: center;
     width: 50px;
   }
+  .avatar-preview {
+    margin-bottom: 10px;
+  }
 </style>
 
 <div class="container" ng-controller="PersonsController">
@@ -46,11 +49,20 @@
                 <label class="control-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" ng-model="inputName">
               </div>
-              <div class="form-group">
+              <!--div class="form-group">
                 <label class="control-label" for="picurl">Logo-URL</label>
                 <input type="text" class="form-control" id="picurl" ng-model="inputImgurl">
+              </div-->
+              <div class="form-group">
+                <label class="control-label" for="picupload">Logo</label>
+                <div class="avatar-wrapper avatar-preview" style="{{'background-image:url(\''+inputImgurl+'\')'}}"></div>
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Hochladen...</button>
+                  </span>
+                  <input type="text" class="form-control" id="picupload" disabled>
+                </div><!-- /input-group -->
               </div>
-              <div class="avatar-wrapper" style="{{'background-image:url(\''+inputImgurl+'\')'}}"></div>
             </form>
           </div>
         </div>
