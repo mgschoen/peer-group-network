@@ -105,7 +105,7 @@ angular.module('baemselcampCms')
       $scope.setApplicationBusy(true);
 
       $http.patch('/api/people/'+$scope.personInFocus.id, {
-        sentence: $scope.inputName,
+        name: $scope.inputName,
         imgurl: $scope.inputImgurl
       }).then(
         function(response){
