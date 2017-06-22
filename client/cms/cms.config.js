@@ -49,7 +49,7 @@ angular.module('baemselcampCms')
   .run(['$cookies', '$rootScope', '$location', '$http',
     function($cookies, $rootScope, $location, $http){
 
-      $rootScope.applicationBusy = true;
+      $rootScope.applicationBusy = false;
 
       var credentials = $cookies.getObject('bc-credentials');
       $rootScope.credentials = credentials;
@@ -161,7 +161,7 @@ angular.module('baemselcampCms')
 
     /**
      * Setter for applicationBusy flag. Use to ensure that flag is set
-     * in the MainController's scope instead of a child scope.
+     * in rootScope instead of a child scope.
      * @param isBusy {boolean}
        */
     $scope.setApplicationBusy = function (isBusy) {
