@@ -1,3 +1,16 @@
+<style>
+  .avatar-wrapper {
+    background-position: center;
+    background-size: cover;
+    border-radius: 25px;
+    height: 50px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    text-align: center;
+    width: 50px;
+  }
+</style>
+
 <div class="container" ng-controller="PersonsController">
   <div class="page-header">
     <h1>Personen <small>Neue Person hinzufügen</small></h1>
@@ -16,6 +29,7 @@
             <label class="control-label" for="picurl">Logo-URL</label>
             <input type="text" class="form-control" id="picurl" ng-model="inputImgurl">
           </div>
+          <div class="avatar-wrapper" style="{{'background-image:url(\''+inputImgurl+'\')'}}"></div>
 
           <!-- Actions -->
           <button type="button" class="btn btn-success" id="save" ng-click="triggerCreatePerson()">
