@@ -19,3 +19,4 @@ node_modules
 npm-debug.log
 data
 bower_components
+storage
